@@ -13,7 +13,7 @@ public class Procedure extends Identity implements Function<Object, Object> {
     /**
      * Constructor to create an instance of this procedure.
      *
-     * @param identifier The unique identifier of this procedure.
+     * @param identifier The identifier of this procedure.
      * @throws NullPointerException If provided identifier is {@code null}.
      */
     public Procedure(String identifier) {

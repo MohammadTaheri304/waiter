@@ -52,6 +52,37 @@ public class NodeTest {
         waiter.addNode(new Node("waiter"));
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void addNodeWithSameIdentifierAsOneOfParentsTest() {
+        var a = new Node("a");
+        var b = new Node("b");
+        var c = new Node("c");
+        var d = new Node("d");
+        var againA = new Node("a");
+        a.addNode(b);
+        a.addNode(c);
+        a.addNode(d);
+
+        c.addNode(againA);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void addNodeWithSameIdentifierAsAnotherNodeInNetwork() {
+        var a = new Node("a");
+        var b = new Node("b");
+        var c = new Node("c");
+        var d = new Node("d");
+        var e = new Node("e");
+        var againB = new Node("b");
+        a.addNode(b);
+        a.addNode(c);
+        a.addNode(d);
+
+        c.addNode(e);
+
+        e.addNode(againB);
+    }
+
     @Test
     public void addNodeTest() {
         var waiter = new Node("waiter");

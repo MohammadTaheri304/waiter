@@ -1,4 +1,4 @@
-package ir.annotation.waiter.server.handlers;
+package ir.annotation.waiter.server.handler;
 
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.socket.SocketChannel;

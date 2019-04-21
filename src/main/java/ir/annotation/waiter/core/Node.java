@@ -9,17 +9,22 @@ import java.util.concurrent.ConcurrentHashMap;
 import static java.util.Objects.requireNonNull;
 
 /**
- * An abstract model of a node in a nodes network.
+ * A model of a node in a nodes network.
  * <p>
  * Nodes network is a local network of related nodes. Like a graph. Each node on this network have a unique identifier.
  * Nodes can contain other nodes as child nodes, and each node is responsible for 0 to N procedures.
- * Procedures are like {@link java.util.function.Function}s in Java, so can be called to invoke actions.
+ * Procedures are {@link java.util.function.Function}s in Java, so can be called to invoke actions.
  * Another important note about this class is that all child nodes and all procedures can be active or inactive.
  * </p>
  *
  * @author Alireza Pourtaghi
  */
 public class Node extends Identity {
+    /**
+     * The parent node of current one.
+     */
+    private Optional<Node> parent;
+
     /**
      * Child nodes of this node. Child nodes can not have same identifier as current one.
      */
@@ -31,7 +36,7 @@ public class Node extends Identity {
     private final ConcurrentHashMap<Procedure, Boolean> procedures;
 
     /**
-     * Constructor to create an instance of this node.
+     * Constructor to create an instance of this node as a root node.
      *
      * @param identifier The unique identifier of this node.
      * @throws NullPointerException If provided identifier is {@code null}.
@@ -39,6 +44,7 @@ public class Node extends Identity {
     public Node(String identifier) {
         super(identifier);
 
+        this.parent = Optional.empty();
         this.nodes = new ConcurrentHashMap<>();
         this.procedures = new ConcurrentHashMap<>();
     }
@@ -56,6 +62,10 @@ public class Node extends Identity {
 
     /**
      * Tries to add provided node as a child node for this node.
+     * <p>
+     * It is important to know that if a node with the same identifier as provided node already exists, the provided node will not be inserted.
+     * Because of this reason you can use get and remove methods to check whether an identifier exists or not, or even remove it first, before inserting new one.
+     * </p>
      *
      * @param node   New node that should be added as child node for this node.
      * @param active Whether new node should be active or not.
@@ -67,6 +77,17 @@ public class Node extends Identity {
 
         if (getIdentifier().equals(node.getIdentifier()))
             throw new IllegalArgumentException("same identifier as current node");
+
+        node.setParent(Optional.of(this));
+
+        var parent = node.getParent();
+        while (parent.isPresent())
+            if (parent.get().getIdentifier().equals(node.getIdentifier())
+                    || parent.get().getNode(node.getIdentifier(), true).isPresent()
+                    || parent.get().getNode(node.getIdentifier(), false).isPresent())
+                throw new IllegalArgumentException("identifier already exists on nodes network");
+            else
+                parent = parent.get().getParent();
 
         nodes.putIfAbsent(node, active);
     }
@@ -112,6 +133,10 @@ public class Node extends Identity {
 
     /**
      * Tries to add provided procedure as an active procedure for this node.
+     * <p>
+     * It is important to know that if a procedure with the same identifier as provided procedure already exists, the provided procedure will not be inserted.
+     * Because of this reason you can use get and remove methods to check whether an identifier exists or not, or even remove it first, before inserting new one.
+     * </p>
      *
      * @param procedure New node that should be added as child node for this node.
      * @throws NullPointerException If procedure is {@code null}.
@@ -170,6 +195,14 @@ public class Node extends Identity {
                 .filter(a -> a.getKey().getIdentifier().equals(procedureIdentifier) && a.getValue().equals(active))
                 .findFirst()
                 .map(Map.Entry::getKey);
+    }
+
+    public Optional<Node> getParent() {
+        return parent;
+    }
+
+    public void setParent(Optional<Node> parent) {
+        this.parent = parent;
     }
 
     @Override

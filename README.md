@@ -1,6 +1,6 @@
 ## waiter
 
-### Prerequisites to develop and test project
+### Prerequisites to develop and test this project
 - JDK 11 (JavaSE 11)
 - Gradle 5.3+
 
@@ -22,7 +22,7 @@ To generate javadoc, run:
 ```
 
 ### Contributing
-To contribute on project please see [CONTRIBUTING](CONTRIBUTING.md).
+To contribute on this project please see [CONTRIBUTING](CONTRIBUTING.md).
 
 ### Contributors
 List of Contributors on [CONTRIBUTORS](CONTRIBUTORS.md).

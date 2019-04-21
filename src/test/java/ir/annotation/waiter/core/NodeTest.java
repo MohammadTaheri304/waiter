@@ -53,7 +53,7 @@ public class NodeTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void addNodeWithSameIdentifierAsOneOfParentsTest() {
+    public void addNodeWithSameIdentifierAsAnotherNodeTest() {
         var a = new Node("a");
         var b = new Node("b");
         var c = new Node("c");
@@ -67,20 +67,103 @@ public class NodeTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void addNodeWithSameIdentifierAsAnotherNodeInNetwork() {
+    public void addNodeWithSameIdentifierAsAnotherNodeSecondTest() {
         var a = new Node("a");
         var b = new Node("b");
         var c = new Node("c");
         var d = new Node("d");
-        var e = new Node("e");
         var againB = new Node("b");
         a.addNode(b);
         a.addNode(c);
         a.addNode(d);
 
-        c.addNode(e);
+        c.addNode(againB);
+    }
 
-        e.addNode(againB);
+    @Test(expected = IllegalArgumentException.class)
+    public void addNodeWithSameIdentifierAsAnotherNodeThirdTest() {
+        var a = new Node("a");
+        var b = new Node("b");
+        var c = new Node("c");
+        var d = new Node("d");
+        var e = new Node("e");
+        var f = new Node("f");
+        var g = new Node("g");
+        var againA = new Node("a");
+        a.addNode(b);
+        a.addNode(c);
+        a.addNode(d);
+
+        c.addNode(e);
+        c.addNode(f);
+        c.addNode(g);
+
+        f.addNode(againA);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void addNodeWithSameIdentifierAsAnotherNodeFourthTest() {
+        var a = new Node("a");
+        var b = new Node("b");
+        var c = new Node("c");
+        var d = new Node("d");
+        var e = new Node("e");
+        var f = new Node("f");
+        var g = new Node("g");
+        var againC = new Node("c");
+        a.addNode(b);
+        a.addNode(c);
+        a.addNode(d);
+
+        c.addNode(e);
+        c.addNode(f);
+        c.addNode(g);
+
+        f.addNode(againC);
+    }
+
+
+    @Test(expected = IllegalArgumentException.class)
+    public void addNodeWithSameIdentifierAsAnotherNodeFifthTest() {
+        var a = new Node("a");
+        var b = new Node("b");
+        var c = new Node("c");
+        var d = new Node("d");
+        var e = new Node("e");
+        var f = new Node("f");
+        var g = new Node("g");
+        var againD = new Node("d");
+        a.addNode(b);
+        a.addNode(c);
+        a.addNode(d);
+
+        c.addNode(e);
+        c.addNode(f);
+        c.addNode(g);
+
+        f.addNode(againD);
+    }
+
+
+    @Test(expected = IllegalArgumentException.class)
+    public void addNodeWithSameIdentifierAsAnotherNodeSixthTest() {
+        var a = new Node("a");
+        var b = new Node("b");
+        var c = new Node("c");
+        var d = new Node("d");
+        var e = new Node("e");
+        var f = new Node("f");
+        var g = new Node("g");
+        var againG = new Node("g");
+        a.addNode(b);
+        a.addNode(c);
+        a.addNode(d);
+
+        c.addNode(e);
+        c.addNode(f);
+        c.addNode(g);
+
+        f.addNode(againG);
     }
 
     @Test

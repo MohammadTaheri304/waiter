@@ -1,4 +1,4 @@
-package ir.annotation.waiter;
+package ir.annotation.waiter.server;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
@@ -11,7 +11,7 @@ import io.netty.channel.kqueue.KQueueServerSocketChannel;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import ir.annotation.waiter.handlers.Initializer;
+import ir.annotation.waiter.server.handlers.Initializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -146,7 +146,7 @@ public final class Server {
      *
      * @throws InterruptedException If any exception occurred during shutdown operation.
      */
-    void stop() throws InterruptedException {
+    public void stop() throws InterruptedException {
         logger.info("stopping server ...");
         eventLoopGroup.shutdownGracefully().sync();
     }

@@ -2,6 +2,8 @@ package ir.annotation.waiter.core;
 
 import ir.annotation.waiter.core.common.Identity;
 
+import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static java.util.Objects.requireNonNull;
@@ -49,12 +51,24 @@ public class Node extends Identity {
      * @throws IllegalArgumentException If provided node's identifier is same as this node's identifier.
      */
     public final void addNode(Node node) throws IllegalArgumentException {
+        addNode(node, true);
+    }
+
+    /**
+     * Tries to add provided node as a child node for this node.
+     *
+     * @param node   New node that should be added as child node for this node.
+     * @param active Whether new node should be active or not.
+     * @throws NullPointerException     If provided node is {@code null}.
+     * @throws IllegalArgumentException If provided node's identifier is same as this node's identifier.
+     */
+    public final void addNode(Node node, boolean active) throws IllegalArgumentException {
         requireNonNull(node);
 
         if (getIdentifier().equals(node.getIdentifier()))
             throw new IllegalArgumentException("same identifier as current node");
 
-        nodes.putIfAbsent(node, true);
+        nodes.putIfAbsent(node, active);
     }
 
     /**
@@ -82,15 +96,41 @@ public class Node extends Identity {
     }
 
     /**
+     * Returns back a child node of current one if exists.
+     *
+     * @param nodeIdentifier The identifier of child node to find.
+     * @param active         Whether it should be active or not. Acts like search filter.
+     * @return An optional value that may or may not contains the desired node.
+     */
+    public final Optional<Node> getNode(String nodeIdentifier, boolean active) {
+        return nodes.entrySet()
+                .stream()
+                .filter(a -> a.getKey().getIdentifier().equals(nodeIdentifier) && a.getValue().equals(active))
+                .findFirst()
+                .map(Map.Entry::getKey);
+    }
+
+    /**
      * Tries to add provided procedure as an active procedure for this node.
      *
      * @param procedure New node that should be added as child node for this node.
      * @throws NullPointerException If procedure is {@code null}.
      */
     public final void addProcedure(Procedure procedure) throws IllegalArgumentException {
+        addProcedure(procedure, true);
+    }
+
+    /**
+     * Tries to add provided procedure as a procedure for this node.
+     *
+     * @param procedure New node that should be added as child node for this node.
+     * @param active    Whether new procedure should be active or not.
+     * @throws NullPointerException If procedure is {@code null}.
+     */
+    public final void addProcedure(Procedure procedure, boolean active) throws IllegalArgumentException {
         requireNonNull(procedure);
 
-        procedures.putIfAbsent(procedure, true);
+        procedures.putIfAbsent(procedure, active);
     }
 
     /**
@@ -115,6 +155,21 @@ public class Node extends Identity {
         requireNonNull(procedureIdentifier);
 
         removeProcedure(new Procedure(procedureIdentifier));
+    }
+
+    /**
+     * Returns back a procedure of current node if exists.
+     *
+     * @param procedureIdentifier The identifier of procedure to find.
+     * @param active              Whether procedure should be active or not. Acts like search filter.
+     * @return An optional value that may or may not contains the desired procedure.
+     */
+    public final Optional<Procedure> getProcedure(String procedureIdentifier, boolean active) {
+        return procedures.entrySet()
+                .stream()
+                .filter(a -> a.getKey().getIdentifier().equals(procedureIdentifier) && a.getValue().equals(active))
+                .findFirst()
+                .map(Map.Entry::getKey);
     }
 
     @Override

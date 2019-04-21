@@ -108,7 +108,7 @@ public final class Server {
      * @param port           Port number that the server must listen on.
      * @return A newly created and ready to start {@link Server}.
      */
-    public static Server setup(EventLoopGroup eventLoopGroup, String host, int port) throws InterruptedException {
+    public static Server setup(EventLoopGroup eventLoopGroup, String host, int port) {
         var server = new Server();
 
         server.setEventLoopGroup(eventLoopGroup);

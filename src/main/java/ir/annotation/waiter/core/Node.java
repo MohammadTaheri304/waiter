@@ -197,11 +197,11 @@ public class Node extends Identity {
                 .map(Map.Entry::getKey);
     }
 
-    public Optional<Node> getParent() {
+    private Optional<Node> getParent() {
         return parent;
     }
 
-    public void setParent(Optional<Node> parent) {
+    private void setParent(Optional<Node> parent) {
         this.parent = parent;
     }
 

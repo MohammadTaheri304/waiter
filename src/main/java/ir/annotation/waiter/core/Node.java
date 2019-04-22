@@ -11,9 +11,10 @@ import static java.util.Objects.requireNonNull;
 /**
  * A model of a node in a nodes network.
  * <p>
- * Nodes network is a local network of related nodes. Like a graph. Each node on this network have a unique identifier.
+ * Nodes network is a local network of related nodes, like a graph.
  * Nodes can contain other nodes as child nodes, and each node is responsible for 0 to N procedures.
- * Procedures are {@link java.util.function.Function}s in Java, so can be called to invoke actions.
+ * The implementation of nodes network guarantees that all paths are unique.
+ * Procedures are {@link java.util.function.Function}s in java, so can be called to invoke actions.
  * Another important note about this class is that all child nodes and all procedures can be active or inactive.
  * </p>
  *
@@ -85,7 +86,7 @@ public class Node extends Identity {
             if (parent.get().getIdentifier().equals(node.getIdentifier())
                     || parent.get().getNode(node.getIdentifier(), true).isPresent()
                     || parent.get().getNode(node.getIdentifier(), false).isPresent())
-                throw new IllegalArgumentException("identifier already exists on nodes network");
+                throw new IllegalArgumentException("violates path uniqueness on nodes network");
             else
                 parent = parent.get().getParent();
 

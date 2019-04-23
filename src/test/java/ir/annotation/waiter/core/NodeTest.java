@@ -67,20 +67,6 @@ public class NodeTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void addNodeWithSameIdentifierAsAnotherNodeSecondTest() {
-        var a = new Node("a");
-        var b = new Node("b");
-        var c = new Node("c");
-        var d = new Node("d");
-        var againB = new Node("b");
-        a.addNode(b);
-        a.addNode(c);
-        a.addNode(d);
-
-        c.addNode(againB);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
     public void addNodeWithSameIdentifierAsAnotherNodeThirdTest() {
         var a = new Node("a");
         var b = new Node("b");
@@ -120,50 +106,6 @@ public class NodeTest {
         c.addNode(g);
 
         f.addNode(againC);
-    }
-
-
-    @Test(expected = IllegalArgumentException.class)
-    public void addNodeWithSameIdentifierAsAnotherNodeFifthTest() {
-        var a = new Node("a");
-        var b = new Node("b");
-        var c = new Node("c");
-        var d = new Node("d");
-        var e = new Node("e");
-        var f = new Node("f");
-        var g = new Node("g");
-        var againD = new Node("d");
-        a.addNode(b);
-        a.addNode(c);
-        a.addNode(d);
-
-        c.addNode(e);
-        c.addNode(f);
-        c.addNode(g);
-
-        f.addNode(againD);
-    }
-
-
-    @Test(expected = IllegalArgumentException.class)
-    public void addNodeWithSameIdentifierAsAnotherNodeSixthTest() {
-        var a = new Node("a");
-        var b = new Node("b");
-        var c = new Node("c");
-        var d = new Node("d");
-        var e = new Node("e");
-        var f = new Node("f");
-        var g = new Node("g");
-        var againG = new Node("g");
-        a.addNode(b);
-        a.addNode(c);
-        a.addNode(d);
-
-        c.addNode(e);
-        c.addNode(f);
-        c.addNode(g);
-
-        f.addNode(againG);
     }
 
     @Test

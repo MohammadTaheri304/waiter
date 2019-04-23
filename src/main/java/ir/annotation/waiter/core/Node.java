@@ -76,16 +76,11 @@ public class Node extends Identity {
     public final void addNode(Node node, boolean active) throws IllegalArgumentException {
         requireNonNull(node);
 
-        if (getIdentifier().equals(node.getIdentifier()))
-            throw new IllegalArgumentException("same identifier as current node");
-
         node.setParent(Optional.of(this));
 
         var parent = node.getParent();
         while (parent.isPresent())
-            if (parent.get().getIdentifier().equals(node.getIdentifier())
-                    || parent.get().getNode(node.getIdentifier(), true).isPresent()
-                    || parent.get().getNode(node.getIdentifier(), false).isPresent())
+            if (parent.get().getIdentifier().equals(node.getIdentifier()))
                 throw new IllegalArgumentException("violates path uniqueness on nodes network");
             else
                 parent = parent.get().getParent();

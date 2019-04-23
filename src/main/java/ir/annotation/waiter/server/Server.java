@@ -151,7 +151,7 @@ public final class Server {
         eventLoopGroup.shutdownGracefully().sync();
     }
 
-    public EventLoopGroup getEventLoopGroup() {
+    private EventLoopGroup getEventLoopGroup() {
         return eventLoopGroup;
     }
 

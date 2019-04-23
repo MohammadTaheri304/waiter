@@ -2,6 +2,7 @@ package ir.annotation.waiter.core;
 
 import ir.annotation.waiter.core.common.Identity;
 
+import java.util.Optional;
 import java.util.function.Function;
 
 /**
@@ -9,7 +10,7 @@ import java.util.function.Function;
  *
  * @author Alireza Pourtaghi
  */
-public class Procedure extends Identity implements Function<Object, Object> {
+public class Procedure extends Identity implements Function<Object, Optional<Object>> {
     /**
      * Constructor to create an instance of this procedure.
      *
@@ -27,8 +28,8 @@ public class Procedure extends Identity implements Function<Object, Object> {
      * @return The result value of procedure invocation.
      */
     @Override
-    public Object apply(Object o) {
-        return new Object();
+    public Optional<Object> apply(Object o) {
+        return Optional.empty();
     }
 
     @Override

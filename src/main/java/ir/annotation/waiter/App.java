@@ -23,9 +23,9 @@ public final class App {
             addShutdownHook(server);
 
             server.start();
-            logger.info("server is up and running on " + server.getHost() + ":" + server.getPort());
+            logger.info("server is up and running on {}:{}", server.getHost(), server.getPort());
         } catch (InterruptedException e) {
-            logger.error("application startup failed with message " + e.getMessage());
+            logger.error("application startup failed with message {}", e.getMessage());
         }
     }
 
@@ -39,7 +39,7 @@ public final class App {
             try {
                 server.stop();
             } catch (InterruptedException e) {
-                logger.error("gracefully shutdown of application failed with message " + e.getMessage());
+                logger.error("gracefully shutdown of application failed with message {}", e.getMessage());
             }
         }));
     }

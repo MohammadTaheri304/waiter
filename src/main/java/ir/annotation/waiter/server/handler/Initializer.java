@@ -12,10 +12,13 @@ import static io.netty.channel.ChannelHandler.Sharable;
  */
 @Sharable
 public class Initializer extends ChannelInitializer<SocketChannel> {
+    /**
+     * Channel inbound exception handler as last handler in channel pipeline.
+     */
+    private final ChannelInboundExceptionHandler channelInboundExceptionHandler = new ChannelInboundExceptionHandler();
 
     @Override
     protected void initChannel(SocketChannel socketChannel) throws Exception {
-        // TODO: Complete channel initialization phase.
-        socketChannel.pipeline().addLast();
+        socketChannel.pipeline().addLast(channelInboundExceptionHandler);
     }
 }

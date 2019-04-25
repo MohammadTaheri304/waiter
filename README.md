@@ -1,4 +1,5 @@
 ## waiter
+Low level (non-http), light and fast µ-framework (Still under development).
 
 ### Prerequisites to develop and test this project
 - JDK 11 (JavaSE 11)

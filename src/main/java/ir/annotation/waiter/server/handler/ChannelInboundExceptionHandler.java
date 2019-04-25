@@ -45,7 +45,7 @@ public class ChannelInboundExceptionHandler extends ChannelInboundHandlerAdapter
      */
     private Value internalServerErrorMessage() {
         return array(map(
-                string("code"), string("unknown"),
+                string("code"), string("internal.server.error"),
                 string("message"), string("Internal server error.")
         ));
     }

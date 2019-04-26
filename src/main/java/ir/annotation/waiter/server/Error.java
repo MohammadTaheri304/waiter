@@ -1,4 +1,4 @@
-package ir.annotation.waiter.server.exceptions;
+package ir.annotation.waiter.server;
 
 /**
  * An error that should be used on all layers when error occurs, including services.
@@ -27,6 +27,7 @@ public class Error extends RuntimeException {
      * @author Alireza Pourtaghi
      */
     public enum Reason {
+        INTERNAL_SERVER_ERROR(new Error("internal.server.error", "Internal server error.")),
         RESOURCE_NOT_FOUND(new Error("resource.not.found", "The requested resource not found."));
 
         /**

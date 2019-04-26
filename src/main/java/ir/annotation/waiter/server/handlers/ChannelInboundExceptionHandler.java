@@ -2,6 +2,7 @@ package ir.annotation.waiter.server.handlers;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import ir.annotation.waiter.server.Error;
 import org.msgpack.core.MessagePack;
 import org.msgpack.value.Value;
 import org.slf4j.Logger;
@@ -44,9 +45,12 @@ public class ChannelInboundExceptionHandler extends ChannelInboundHandlerAdapter
      * @return Message pack's {@link Value} format.
      */
     private Value buildInternalServerErrorMessage() {
-        return array(map(
-                string("code"), string("internal.server.error"),
-                string("message"), string("Internal server error.")
-        ));
+        return map(
+                string("successful"), bool(false),
+                string("errors"), array(map(
+                        string("code"), string(Error.Reason.INTERNAL_SERVER_ERROR.getError().getCode()),
+                        string("message"), string(Error.Reason.INTERNAL_SERVER_ERROR.getError().getMessage())
+                ))
+        );
     }
 }

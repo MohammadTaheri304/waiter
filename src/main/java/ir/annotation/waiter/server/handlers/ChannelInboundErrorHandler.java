@@ -2,7 +2,7 @@ package ir.annotation.waiter.server.handlers;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
-import ir.annotation.waiter.server.exceptions.Error;
+import ir.annotation.waiter.server.Error;
 import org.msgpack.core.MessagePack;
 import org.msgpack.value.Value;
 
@@ -20,15 +20,11 @@ public class ChannelInboundErrorHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         if (cause instanceof Error) {
-            try {
-                try (var buffer = MessagePack.newDefaultBufferPacker()) {
-                    buffer.packValue(buildErrorMessage((Error) cause));
-                    var bytesOut = ctx.alloc().directBuffer((int) buffer.getTotalWrittenBytes());
-                    bytesOut.writeBytes(buffer.toByteArray());
-                    ctx.writeAndFlush(bytesOut);
-                }
-            } finally {
-                ctx.close();
+            try (var buffer = MessagePack.newDefaultBufferPacker()) {
+                buffer.packValue(buildErrorMessage((Error) cause));
+                var bytesOut = ctx.alloc().directBuffer((int) buffer.getTotalWrittenBytes());
+                bytesOut.writeBytes(buffer.toByteArray());
+                ctx.writeAndFlush(bytesOut);
             }
         } else {
             ctx.fireExceptionCaught(cause);
@@ -42,9 +38,12 @@ public class ChannelInboundErrorHandler extends ChannelInboundHandlerAdapter {
      * @return Message pack's {@link Value} format.
      */
     private Value buildErrorMessage(Error error) {
-        return array(map(
-                string("code"), string(error.getCode()),
-                string("message"), string(error.getMessage())
-        ));
+        return map(
+                string("successful"), bool(false),
+                string("errors"), array(map(
+                        string("code"), string(error.getCode()),
+                        string("message"), string(error.getMessage())
+                ))
+        );
     }
 }

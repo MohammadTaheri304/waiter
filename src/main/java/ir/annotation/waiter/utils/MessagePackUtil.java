@@ -1,7 +1,8 @@
 package ir.annotation.waiter.utils;
 
-import org.msgpack.value.Value;
+import org.msgpack.value.*;
 import org.msgpack.value.impl.ImmutableArrayValueImpl;
+import org.msgpack.value.impl.ImmutableBooleanValueImpl;
 import org.msgpack.value.impl.ImmutableMapValueImpl;
 import org.msgpack.value.impl.ImmutableStringValueImpl;
 
@@ -18,7 +19,7 @@ public class MessagePackUtil {
      * @param values The array elements.
      * @return Newly created and ready to use {@link ImmutableArrayValueImpl}.
      */
-    public static ImmutableArrayValueImpl array(Value... values) {
+    public static ImmutableArrayValue array(Value... values) {
         return new ImmutableArrayValueImpl(values);
     }
 
@@ -28,8 +29,18 @@ public class MessagePackUtil {
      * @param keyValues The map elements.
      * @return Newly created and ready to use {@link ImmutableMapValueImpl}.
      */
-    public static ImmutableMapValueImpl map(Value... keyValues) {
+    public static ImmutableMapValue map(Value... keyValues) {
         return new ImmutableMapValueImpl(keyValues);
+    }
+
+    /**
+     * Generates a message pack's boolean format.
+     *
+     * @param value The boolean value.
+     * @return Newly created and ready to use {@link ImmutableBooleanValueImpl}.
+     */
+    public static ImmutableBooleanValue bool(boolean value) {
+        return value ? ImmutableBooleanValueImpl.TRUE : ImmutableBooleanValueImpl.FALSE;
     }
 
     /**
@@ -38,7 +49,7 @@ public class MessagePackUtil {
      * @param value The string value.
      * @return Newly created and ready to use {@link ImmutableStringValueImpl}.
      */
-    public static ImmutableStringValueImpl string(String value) {
+    public static ImmutableStringValue string(String value) {
         return new ImmutableStringValueImpl(value);
     }
 }

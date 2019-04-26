@@ -11,7 +11,7 @@ import io.netty.channel.kqueue.KQueueServerSocketChannel;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import ir.annotation.waiter.server.handler.Initializer;
+import ir.annotation.waiter.server.handlers.Initializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

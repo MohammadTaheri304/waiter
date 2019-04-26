@@ -1,6 +1,6 @@
 package ir.annotation.waiter.core;
 
-import ir.annotation.waiter.core.common.Identity;
+import ir.annotation.waiter.core.commons.Identity;
 
 import java.util.Optional;
 import java.util.function.Function;

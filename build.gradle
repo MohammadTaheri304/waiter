@@ -2,7 +2,11 @@ plugins {
     id 'java'
     id 'application'
     id 'idea'
+
+    id "com.google.osdetector" version "1.6.2"
 }
+
+String os = osdetector.os
 
 repositories {
     jcenter()
@@ -11,15 +15,17 @@ repositories {
 dependencies {
     implementation 'com.google.guava:guava:27.0.1-jre'
 
-    compile 'io.netty:netty-common:4.1.35.Final'
-    compile 'io.netty:netty-buffer:4.1.35.Final'
-    compile 'io.netty:netty-transport:4.1.35.Final'
     compile 'io.netty:netty-handler:4.1.35.Final'
     compile 'io.netty:netty-transport-native-epoll:4.1.35.Final'
     compile 'io.netty:netty-transport-native-kqueue:4.1.35.Final'
+
+    if (os == "linux")
+        compile 'io.netty:netty-transport-native-epoll:4.1.35.Final:' + osdetector.classifier
+    if (os == "osx" || os == "freebsd" || os == "openbsd" || os == "netbsd")
+        compile 'io.netty:netty-transport-native-kqueue:4.1.35.Final:' + osdetector.classifier
+
     compile 'org.msgpack:msgpack-core:0.8.16'
     compile 'org.slf4j:slf4j-simple:1.7.26'
-
     testImplementation 'junit:junit:4.12'
 }
 

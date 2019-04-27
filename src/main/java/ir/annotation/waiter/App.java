@@ -1,8 +1,13 @@
 package ir.annotation.waiter;
 
+import io.netty.channel.epoll.EpollEventLoopGroup;
+import io.netty.channel.kqueue.KQueueEventLoopGroup;
 import ir.annotation.waiter.server.Server;
+import ir.annotation.waiter.utils.OSUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import static ir.annotation.waiter.utils.OSUtil.OS.*;
 
 /**
  * Main application class that includes main method.
@@ -19,9 +24,12 @@ public final class App {
      */
     public static void main(String[] args) {
         try {
-            var server = Server.setup();
-            addShutdownHook(server);
+            var os = OSUtil.detectOS();
+            var server = os.equals(LINUX) ? Server.setup(new EpollEventLoopGroup())
+                    : os.equals(OSX) || os.equals(BSD) ? Server.setup(new KQueueEventLoopGroup())
+                    : Server.setup();
 
+            addShutdownHook(server);
             server.start();
             logger.info("server is up and running on {}:{}", server.getHost(), server.getPort());
         } catch (InterruptedException e) {

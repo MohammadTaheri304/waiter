@@ -129,12 +129,15 @@ public final class Server {
         var serverBootstrap = new ServerBootstrap();
 
         serverBootstrap.group(getEventLoopGroup());
-        if (getEventLoopGroup() instanceof NioEventLoopGroup)
+        if (getEventLoopGroup() instanceof NioEventLoopGroup) {
             serverBootstrap.channel(NioServerSocketChannel.class);
-        else if (getEventLoopGroup() instanceof EpollEventLoopGroup)
+        } else if (getEventLoopGroup() instanceof EpollEventLoopGroup) {
+            logger.info("using epoll native transport");
             serverBootstrap.channel(EpollServerSocketChannel.class);
-        else if (getEventLoopGroup() instanceof KQueueEventLoopGroup)
+        } else if (getEventLoopGroup() instanceof KQueueEventLoopGroup) {
+            logger.info("using kqueue native transport");
             serverBootstrap.channel(KQueueServerSocketChannel.class);
+        }
         serverBootstrap.localAddress(getHost(), getPort());
         serverBootstrap.childHandler(channelInitializer);
 

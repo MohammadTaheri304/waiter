@@ -13,7 +13,7 @@ import static io.netty.channel.ChannelHandler.Sharable;
 @Sharable
 public class Initializer extends ChannelInitializer<SocketChannel> {
     /**
-     * Channel inbound error handler to handle server errors.
+     * Channel inbound error handler to handle logical errors.
      */
     private final ChannelInboundErrorHandler channelInboundErrorHandler = new ChannelInboundErrorHandler();
 

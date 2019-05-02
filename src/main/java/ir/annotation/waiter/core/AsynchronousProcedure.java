@@ -5,36 +5,36 @@ import ir.annotation.waiter.core.commons.AbstractProcedure;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
-import java.util.function.Function;
+import java.util.function.BiFunction;
 
 /**
- * An implementation of {@link AbstractProcedure} that acts as a normal synchronous function.
+ * An implementation of {@link AbstractProcedure} that acts as an asynchronous function.
  * <p>
- * This procedure also implements {@link Function} to provide same functionality.
+ * This procedure also implements {@link BiFunction} to provide same functionality.
  * </p>
  *
  * @param <T> The type of the input to the procedure.
  * @param <R> The type of the result of the procedure.
  * @author Alireza Pourtaghi
  */
-public class Procedure<T, R> extends AbstractProcedure<T, R> implements Function<T, Optional<R>> {
+public class AsynchronousProcedure<T, R> extends AbstractProcedure<T, R> implements BiFunction<ExecutorService, T, CompletableFuture<Optional<R>>> {
     /**
      * Constructor to create an instance of procedure.
      *
      * @param identifier The identifier of procedure.
      * @throws NullPointerException If provided identifier is {@code null}.
      */
-    public Procedure(String identifier) {
+    public AsynchronousProcedure(String identifier) {
         super(identifier);
     }
 
     @Override
-    public Optional<R> apply(T t) {
+    public final Optional<R> apply(T t) {
         return Optional.empty();
     }
 
     @Override
-    public final CompletableFuture<Optional<R>> apply(ExecutorService executor, T t) {
+    public CompletableFuture<Optional<R>> apply(ExecutorService executor, T t) {
         return CompletableFuture.completedFuture(Optional.empty());
     }
 }

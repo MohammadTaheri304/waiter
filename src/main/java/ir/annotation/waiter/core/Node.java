@@ -1,5 +1,6 @@
 package ir.annotation.waiter.core;
 
+import ir.annotation.waiter.core.commons.AbstractProcedure;
 import ir.annotation.waiter.core.commons.Identity;
 
 import java.util.Map;
@@ -34,7 +35,7 @@ public class Node extends Identity {
     /**
      * Procedures that can be invoked on this node.
      */
-    private final ConcurrentHashMap<Procedure, Boolean> procedures;
+    private final ConcurrentHashMap<AbstractProcedure, Boolean> procedures;
 
     /**
      * Constructor to create an instance of this node as a root node.
@@ -137,7 +138,7 @@ public class Node extends Identity {
      * @param procedure New node that should be added as child node for this node.
      * @throws NullPointerException If procedure is {@code null}.
      */
-    public final void addProcedure(Procedure procedure) throws IllegalArgumentException {
+    public final void addProcedure(AbstractProcedure procedure) throws IllegalArgumentException {
         addProcedure(procedure, true);
     }
 
@@ -148,7 +149,7 @@ public class Node extends Identity {
      * @param active    Whether new procedure should be active or not.
      * @throws NullPointerException If procedure is {@code null}.
      */
-    public final void addProcedure(Procedure procedure, boolean active) throws IllegalArgumentException {
+    public final void addProcedure(AbstractProcedure procedure, boolean active) throws IllegalArgumentException {
         requireNonNull(procedure);
 
         procedures.putIfAbsent(procedure, active);
@@ -160,7 +161,7 @@ public class Node extends Identity {
      * @param procedure Procedure that should be deleted from procedures of current node.
      * @throws NullPointerException If provided procedure is {@code null}.
      */
-    public final void removeProcedure(Procedure procedure) {
+    public final void removeProcedure(AbstractProcedure procedure) {
         requireNonNull(procedure);
 
         procedures.remove(procedure);
@@ -185,7 +186,7 @@ public class Node extends Identity {
      * @param active              Whether procedure should be active or not. Acts like search filter.
      * @return An optional value that may or may not contains the desired procedure.
      */
-    public final Optional<Procedure> getProcedure(String procedureIdentifier, boolean active) {
+    public final Optional<AbstractProcedure> getProcedure(String procedureIdentifier, boolean active) {
         return procedures.entrySet()
                 .stream()
                 .filter(a -> a.getKey().getIdentifier().equals(procedureIdentifier) && a.getValue().equals(active))

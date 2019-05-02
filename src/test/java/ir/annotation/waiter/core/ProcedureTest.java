@@ -13,17 +13,17 @@ public class ProcedureTest {
 
     @Test
     public void constructionTest() {
-        var getSettings = new Procedure("getSettings");
+        var getSettings = new Procedure<>("getSettings");
 
         assertEquals(getSettings.getIdentifier(), "getSettings");
     }
 
     @Test
     public void equalsTest() {
-        var firstGetSettings = new Procedure("getSettings");
-        var secondGetSettings = new Procedure("getSettings");
-        var updateSettings = new Procedure("updateSettings");
-        var deleteSettings = new Procedure("deleteSettings");
+        var firstGetSettings = new Procedure<>("getSettings");
+        var secondGetSettings = new Procedure<>("getSettings");
+        var updateSettings = new Procedure<>("updateSettings");
+        var deleteSettings = new Procedure<>("deleteSettings");
 
         assertEquals(firstGetSettings, secondGetSettings);
         assertNotEquals(updateSettings, deleteSettings);
@@ -31,10 +31,10 @@ public class ProcedureTest {
 
     @Test
     public void hashCodeTest() {
-        var firstGetSettings = new Procedure("getSettings");
-        var secondGetSettings = new Procedure("getSettings");
-        var updateSettings = new Procedure("updateSettings");
-        var deleteSettings = new Procedure("deleteSettings");
+        var firstGetSettings = new Procedure<>("getSettings");
+        var secondGetSettings = new Procedure<>("getSettings");
+        var updateSettings = new Procedure<>("updateSettings");
+        var deleteSettings = new Procedure<>("deleteSettings");
 
         assertEquals(firstGetSettings.hashCode(), secondGetSettings.hashCode());
         assertNotEquals(updateSettings.hashCode(), deleteSettings.hashCode());
@@ -42,8 +42,9 @@ public class ProcedureTest {
 
     @Test
     public void testDefaultImplementation() {
-        var getSettings = new Procedure("getSettings");
+        var getSettings = new Procedure<String, String>("getSettings");
 
-        assertNotNull(getSettings.apply(new String("Hello")));
+        var result = getSettings.apply("Hello");
+        assertTrue(result.isEmpty());
     }
 }

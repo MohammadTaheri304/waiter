@@ -1,0 +1,33 @@
+package ir.annotation.waiter.procedures;
+
+import ir.annotation.waiter.core.AsynchronousProcedure;
+
+import java.security.SecureRandom;
+import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+
+/**
+ * A random number generator that generates numbers from 111111 to 999999 inclusive.
+ *
+ * @author Alireza Pourtaghi
+ */
+public class SecureRandomNumberGenerator extends AsynchronousProcedure<Integer, Integer> {
+    /**
+     * Java's secure random instance.
+     */
+    private final SecureRandom secureRandom;
+
+    /**
+     * Constructor to create an instance of this procedure.
+     */
+    public SecureRandomNumberGenerator() {
+        super("generateSecureRandomNumber");
+        this.secureRandom = new SecureRandom();
+    }
+
+    @Override
+    public CompletableFuture<Optional<Integer>> apply(ExecutorService executor, Integer integer) {
+        return CompletableFuture.supplyAsync(() -> Optional.of(111111 + secureRandom.nextInt(888888 + 1)), executor);
+    }
+}

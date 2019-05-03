@@ -12,7 +12,7 @@ import java.util.concurrent.ExecutorService;
  *
  * @author Alireza Pourtaghi
  */
-public class SecureRandomNumberGenerator extends AsynchronousProcedure<Integer, Integer> {
+public class SecureRandomNumberGenerator extends AsynchronousProcedure<Void, Integer> {
     /**
      * Java's secure random instance.
      */
@@ -27,7 +27,7 @@ public class SecureRandomNumberGenerator extends AsynchronousProcedure<Integer, 
     }
 
     @Override
-    public CompletableFuture<Optional<Integer>> apply(ExecutorService executor, Integer integer) {
+    public CompletableFuture<Optional<Integer>> apply(ExecutorService executor, Void aVoid) {
         return CompletableFuture.supplyAsync(() -> Optional.of(111111 + secureRandom.nextInt(888888 + 1)), executor);
     }
 }

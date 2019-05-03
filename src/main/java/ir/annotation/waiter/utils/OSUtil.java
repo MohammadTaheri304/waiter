@@ -4,6 +4,9 @@ import java.util.Locale;
 
 /**
  * Utility class to detect operating system name.
+ * <p>
+ * Implementation from https://github.com/trustin/os-maven-plugin .
+ * </p>
  *
  * @author Alireza Pourtaghi
  */

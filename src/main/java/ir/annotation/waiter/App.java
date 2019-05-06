@@ -32,8 +32,9 @@ public final class App {
             addShutdownHook(server);
             server.start();
             logger.info("server is up and running on {}:{}", server.getHost(), server.getPort());
-        } catch (InterruptedException e) {
+        } catch (Exception e) {
             logger.error("application startup failed with message {}", e.getMessage());
+            System.exit(-1);
         }
     }
 

@@ -12,8 +12,13 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import ir.annotation.waiter.server.handlers.Initializer;
+import ir.annotation.waiter.utils.OSUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Properties;
+
+import static ir.annotation.waiter.utils.OSUtil.OS.*;
 
 /**
  * A netty based server socket implementation.
@@ -34,7 +39,7 @@ public final class Server {
      * The default value of event loop group is an NIO based event loop group.
      * </p>
      */
-    private EventLoopGroup eventLoopGroup = new NioEventLoopGroup();
+    private final EventLoopGroup eventLoopGroup;
 
     /**
      * Host value that this server must listen on.
@@ -42,7 +47,7 @@ public final class Server {
      * The default value is listening on localhost.
      * </p>
      */
-    private String host = "localhost";
+    private final String host;
 
     /**
      * Port number that this server must listen on.
@@ -50,72 +55,31 @@ public final class Server {
      * The default value is listening on 6666.
      * </p>
      */
-    private int port = 6666;
+    private final int port;
 
     /**
-     * Default private empty constructor.
+     * Default private constructor.
      */
-    private Server() {
-    }
-
-    /**
-     * Starts the server with all default values.
-     *
-     * @return A newly created and ready to start {@link Server}.
-     */
-    public static Server setup() {
-        return new Server();
-    }
-
-    /**
-     * Setups the server with host and port as default values.
-     *
-     * @param eventLoopGroup Event loop group for netty server.
-     * @return A newly created and ready to start {@link Server}.
-     * @throws IllegalArgumentException If provided event loop group is not supported.
-     */
-    public static Server setup(EventLoopGroup eventLoopGroup) {
-        var server = new Server();
-
-        if (!(eventLoopGroup instanceof NioEventLoopGroup) && !(eventLoopGroup instanceof EpollEventLoopGroup) && !(eventLoopGroup instanceof KQueueEventLoopGroup))
-            throw new IllegalArgumentException("Unsupported event loop group type.");
-        server.setEventLoopGroup(eventLoopGroup);
-
-        return server;
-    }
-
-    /**
-     * Setups the server with event loop group as default value.
-     *
-     * @param host Host value that the server must listen on.
-     * @param port Port number that the server must listen on.
-     * @return A newly created and ready to start {@link Server}.
-     */
-    public static Server setup(String host, int port) {
-        var server = new Server();
-
-        server.setHost(host);
-        server.setPort(port);
-
-        return server;
+    public Server(EventLoopGroup eventLoopGroup, String host, int port) {
+        this.eventLoopGroup = eventLoopGroup;
+        this.host = host;
+        this.port = port;
     }
 
     /**
      * Setups the server.
      *
-     * @param eventLoopGroup Event loop group for netty server.
-     * @param host           Host value that the server must listen on.
-     * @param port           Port number that the server must listen on.
+     * @param properties Application properties.
      * @return A newly created and ready to start {@link Server}.
      */
-    public static Server setup(EventLoopGroup eventLoopGroup, String host, int port) {
-        var server = new Server();
+    public static Server setup(Properties properties) {
+        var os = OSUtil.detectOS();
 
-        server.setEventLoopGroup(eventLoopGroup);
-        server.setHost(host);
-        server.setPort(port);
+        var eventLoopGroup = os.equals(LINUX) ? new EpollEventLoopGroup() : os.equals(OSX) || os.equals(BSD) ? new KQueueEventLoopGroup() : new NioEventLoopGroup();
+        var host = properties.getOrDefault("server.host", "0.0.0.0").toString();
+        var port = Integer.parseInt(properties.getOrDefault("server.port", "6666").toString());
 
-        return server;
+        return new Server(eventLoopGroup, host, port);
     }
 
     /**
@@ -154,27 +118,15 @@ public final class Server {
         eventLoopGroup.shutdownGracefully().sync();
     }
 
-    private EventLoopGroup getEventLoopGroup() {
+    public EventLoopGroup getEventLoopGroup() {
         return eventLoopGroup;
-    }
-
-    private void setEventLoopGroup(EventLoopGroup eventLoopGroup) {
-        this.eventLoopGroup = eventLoopGroup;
     }
 
     public String getHost() {
         return host;
     }
 
-    private void setHost(String host) {
-        this.host = host;
-    }
-
     public int getPort() {
         return port;
-    }
-
-    private void setPort(int port) {
-        this.port = port;
     }
 }

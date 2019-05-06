@@ -24,6 +24,7 @@ dependencies {
     if (os == "osx" || os == "freebsd" || os == "openbsd" || os == "netbsd")
         compile 'io.netty:netty-transport-native-kqueue:4.1.35.Final:' + osdetector.classifier
 
+    compile 'com.zaxxer:HikariCP:3.3.1'
     compile 'org.msgpack:msgpack-core:0.8.16'
     compile 'org.slf4j:slf4j-simple:1.7.26'
     testImplementation 'junit:junit:4.12'

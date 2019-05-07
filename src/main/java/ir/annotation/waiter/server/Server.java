@@ -60,7 +60,7 @@ public final class Server {
     /**
      * Default private constructor.
      */
-    public Server(EventLoopGroup eventLoopGroup, String host, int port) {
+    private Server(EventLoopGroup eventLoopGroup, String host, int port) {
         this.eventLoopGroup = eventLoopGroup;
         this.host = host;
         this.port = port;

@@ -15,7 +15,7 @@ You can call provided procedures with the following structure using [MessagePack
     "proc": "generate_secure_random_number",
     "atts": [
         {"token" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"},
-        {"source_ip" : "127.0.0.1"}
+        {"client_ip" : "127.0.0.1"}
     ],
     "iput": {
         "from": 111111,
@@ -28,20 +28,22 @@ You can call provided procedures with the following structure using [MessagePack
 - iput (Optional): Input data that must be sent to procedure.
 
 #### What about response?
-The server will respond to your call with the following structure again using [MessagePack](https://msgpack.org/index.html):
+The server will respond to your call with the following structure, again using [MessagePack](https://msgpack.org/index.html):
 
 ```
 {
     "sful": true,
-    "oput": {
-        "name": "Allen"
-    }
+    "atts": [
+            {"server_ip" : "127.0.0.1"}
+    ],
+    "oput": 243459
 }
 ```
 - sful: Determines whether the procedure call was successful or not. Possible values are `true` and `false`.
+- atts (Optional): An array of key-value pair attributes.
 - errs (Optional): An array of errors occurred when procedure call was not successful.
     - Array elements are an object with two fields, `code` and `message`.
-- oput (Optional): Output data that received from procedure call.
+- oput (Optional): Output data (if any) that received from procedure call.
 
 ### Prerequisites to develop and test this project
 - JDK 11 (JavaSE 11)

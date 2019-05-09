@@ -22,7 +22,7 @@ public class SecureRandomNumberGenerator extends AsynchronousProcedure<Void, Int
      * Constructor to create an instance of this procedure.
      */
     public SecureRandomNumberGenerator() {
-        super("generateSecureRandomNumber");
+        super("generate_secure_random_number");
         this.secureRandom = new SecureRandom();
     }
 

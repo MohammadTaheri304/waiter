@@ -31,7 +31,7 @@ public class SHA256HashGenerator extends AsynchronousProcedure<byte[], String> {
      * @throws NoSuchAlgorithmException If desired algorithm name does not exists.
      */
     public SHA256HashGenerator() throws NoSuchAlgorithmException {
-        super("generateSHA256Hash");
+        super("generate_SHA256_hash");
         this.messageDigest = MessageDigest.getInstance("SHA-256");
         this.encoder = Base64.getEncoder();
     }

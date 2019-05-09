@@ -12,15 +12,14 @@ You can call provided procedures with the following structure using [MessagePack
 
 ```
 {
-    "proc": "procedureName",
+    "proc": "generate_secure_random_number",
     "atts": [
         {"token" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"},
         {"source_ip" : "127.0.0.1"}
     ],
     "iput": {
-        "id": 2345,
-        "name": "Allen",
-        "is_account_active": true
+        "from": 111111,
+        "to": 999999
     }
 }
 ```
@@ -29,6 +28,8 @@ You can call provided procedures with the following structure using [MessagePack
 - iput (Optional): Input data that must be sent to procedure.
 
 #### What about response?
+The server will respond to your call with the following structure again using [MessagePack](https://msgpack.org/index.html):
+
 ```
 {
     "sful": true,
@@ -38,7 +39,7 @@ You can call provided procedures with the following structure using [MessagePack
 }
 ```
 - sful: Determines whether the procedure call was successful or not. Possible values are `true` and `false`.
-- errs (Optional): An array of errors occurred when sful was false.
+- errs (Optional): An array of errors occurred when procedure call was not successful.
     - Array elements are an object with two fields, `code` and `message`.
 - oput (Optional): Output data that received from procedure call.
 

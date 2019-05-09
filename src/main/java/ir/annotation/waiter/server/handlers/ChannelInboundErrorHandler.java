@@ -43,8 +43,8 @@ public class ChannelInboundErrorHandler extends ChannelInboundHandlerAdapter {
      */
     private Value buildErrorMessage(Error error) {
         return map(
-                string("successful"), bool(false),
-                string("errors"), array(map(
+                string("sful"), bool(false),
+                string("errs"), array(map(
                         string("code"), string(error.getCode()),
                         string("message"), string(error.getMessage())
                 ))

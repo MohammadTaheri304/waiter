@@ -46,10 +46,10 @@ public class ChannelInboundExceptionHandler extends ChannelInboundHandlerAdapter
      */
     private Value buildInternalServerErrorMessage() {
         return map(
-                string("sful"), bool(false),
+                string("succ"), bool(false),
                 string("errs"), array(map(
                         string("code"), string(Error.Reason.INTERNAL_SERVER_ERROR.getError().getCode()),
-                        string("message"), string(Error.Reason.INTERNAL_SERVER_ERROR.getError().getMessage())
+                        string("mess"), string(Error.Reason.INTERNAL_SERVER_ERROR.getError().getMessage())
                 ))
         );
     }

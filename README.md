@@ -32,17 +32,17 @@ The server will respond to your call with the following structure, again using [
 
 ```
 {
-    "sful": true,
+    "succ": true,
     "atts": [
             {"server_ip" : "127.0.0.1"}
     ],
     "oput": 243459
 }
 ```
-- sful: Determines whether the procedure call was successful or not. Possible values are `true` and `false`.
+- succ : Determines whether the procedure call was successful or not. Possible values are `true` and `false`.
 - atts (Optional): An array of key-value pair attributes.
 - errs (Optional): An array of errors occurred when procedure call was not successful.
-    - Array elements are an object with two fields, `code` and `message`.
+    - Array elements are an object with two fields, `code` as error code and `mess` as error message.
 - oput (Optional): Output data (if any) that received from procedure call.
 
 ### Prerequisites to develop and test this project

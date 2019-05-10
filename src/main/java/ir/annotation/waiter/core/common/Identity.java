@@ -1,4 +1,4 @@
-package ir.annotation.waiter.core.commons;
+package ir.annotation.waiter.core.common;
 
 import java.util.Objects;
 

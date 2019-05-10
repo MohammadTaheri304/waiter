@@ -1,4 +1,4 @@
-package ir.annotation.waiter.server.handlers;
+package ir.annotation.waiter.server.handler;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -7,7 +7,7 @@ import org.msgpack.core.MessagePack;
 import org.msgpack.value.Value;
 
 import static io.netty.channel.ChannelHandler.Sharable;
-import static ir.annotation.waiter.utils.MessagePackUtil.*;
+import static ir.annotation.waiter.util.MessagePackUtil.*;
 
 /**
  * Channel inbound error handler to handle all kind of errors.
@@ -16,6 +16,9 @@ import static ir.annotation.waiter.utils.MessagePackUtil.*;
  */
 @Sharable
 public class ChannelInboundErrorHandler extends ChannelInboundHandlerAdapter {
+
+    ChannelInboundErrorHandler() {
+    }
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {

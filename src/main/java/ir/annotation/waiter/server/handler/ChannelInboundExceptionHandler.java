@@ -1,4 +1,4 @@
-package ir.annotation.waiter.server.handlers;
+package ir.annotation.waiter.server.handler;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -9,7 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import static io.netty.channel.ChannelHandler.Sharable;
-import static ir.annotation.waiter.utils.MessagePackUtil.*;
+import static ir.annotation.waiter.util.MessagePackUtil.*;
 
 /**
  * Channel inbound exception handler that is inserted as last channel handler in channel pipeline to handle all kinds of {@link Throwable}.
@@ -26,9 +26,9 @@ public class ChannelInboundExceptionHandler extends ChannelInboundHandlerAdapter
     /**
      * Appropriate binary message for internal server error.
      */
-    private static final Value internalServerErrorMessage;
+    private final Value internalServerErrorMessage;
 
-    static {
+    ChannelInboundExceptionHandler() {
         internalServerErrorMessage = map(
                 string("succ"), bool(false),
                 string("errs"), array(map(

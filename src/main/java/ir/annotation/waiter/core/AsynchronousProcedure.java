@@ -1,6 +1,6 @@
 package ir.annotation.waiter.core;
 
-import ir.annotation.waiter.core.commons.AbstractProcedure;
+import ir.annotation.waiter.core.common.AbstractProcedure;
 
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;

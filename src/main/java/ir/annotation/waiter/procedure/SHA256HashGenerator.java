@@ -1,4 +1,4 @@
-package ir.annotation.waiter.procedures;
+package ir.annotation.waiter.procedure;
 
 import ir.annotation.waiter.core.AsynchronousProcedure;
 

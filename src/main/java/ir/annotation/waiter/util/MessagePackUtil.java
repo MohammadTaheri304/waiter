@@ -1,4 +1,4 @@
-package ir.annotation.waiter.utils;
+package ir.annotation.waiter.util;
 
 import org.msgpack.value.*;
 import org.msgpack.value.impl.ImmutableArrayValueImpl;

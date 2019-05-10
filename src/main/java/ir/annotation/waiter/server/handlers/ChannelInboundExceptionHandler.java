@@ -23,13 +23,28 @@ import static ir.annotation.waiter.utils.MessagePackUtil.*;
 public class ChannelInboundExceptionHandler extends ChannelInboundHandlerAdapter {
     private static final Logger logger = LoggerFactory.getLogger(ChannelInboundExceptionHandler.class);
 
+    /**
+     * Appropriate binary message for internal server error.
+     */
+    private static final Value internalServerErrorMessage;
+
+    static {
+        internalServerErrorMessage = map(
+                string("succ"), bool(false),
+                string("errs"), array(map(
+                        string("code"), string(Error.Reason.INTERNAL_SERVER_ERROR.getError().getCode()),
+                        string("mess"), string(Error.Reason.INTERNAL_SERVER_ERROR.getError().getMessage())
+                ))
+        );
+    }
+
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         try {
             logger.error("exception caught ", cause);
 
             try (var buffer = MessagePack.newDefaultBufferPacker()) {
-                buffer.packValue(buildInternalServerErrorMessage());
+                buffer.packValue(internalServerErrorMessage);
                 var bytesOut = ctx.alloc().directBuffer((int) buffer.getTotalWrittenBytes());
                 bytesOut.writeBytes(buffer.toByteArray());
                 ctx.writeAndFlush(bytesOut);
@@ -37,20 +52,5 @@ public class ChannelInboundExceptionHandler extends ChannelInboundHandlerAdapter
         } finally {
             ctx.close();
         }
-    }
-
-    /**
-     * Generates appropriate binary message.
-     *
-     * @return Message pack's {@link Value} format.
-     */
-    private Value buildInternalServerErrorMessage() {
-        return map(
-                string("succ"), bool(false),
-                string("errs"), array(map(
-                        string("code"), string(Error.Reason.INTERNAL_SERVER_ERROR.getError().getCode()),
-                        string("mess"), string(Error.Reason.INTERNAL_SERVER_ERROR.getError().getMessage())
-                ))
-        );
     }
 }

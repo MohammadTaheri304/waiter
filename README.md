@@ -39,7 +39,7 @@ The server will respond to your call with the following structure, again using [
     "oput": 243459
 }
 ```
-- succ : Determines whether the procedure call was successful or not. Possible values are `true` and `false`.
+- succ (Required) : Determines whether the procedure call was successful or not. Possible values are `true` and `false`.
 - atts (Optional): An array of key-value pair attributes.
 - errs (Optional): An array of errors occurred when procedure call was not successful.
     - Array elements are an object with two fields, `code` as error code and `mess` as error message.

@@ -16,9 +16,9 @@ public final class App {
      */
     public static void main(String[] args) {
         var waiter = new Waiter();
+        addShutdownHook(waiter);
 
         waiter.start(args);
-        addShutdownHook(waiter);
     }
 
     /**

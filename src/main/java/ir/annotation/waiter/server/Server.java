@@ -11,6 +11,7 @@ import io.netty.channel.kqueue.KQueueServerSocketChannel;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import ir.annotation.waiter.core.application.Component;
 import ir.annotation.waiter.server.handler.Initializer;
 import ir.annotation.waiter.util.OSUtil;
 import org.slf4j.Logger;
@@ -25,7 +26,7 @@ import static ir.annotation.waiter.util.OSUtil.OS.*;
  *
  * @author Alireza Pourtaghi
  */
-public final class Server {
+public final class Server extends Component<Server, ChannelFuture> {
     private static final Logger logger = LoggerFactory.getLogger(Server.class);
 
     /**
@@ -39,7 +40,7 @@ public final class Server {
      * The default value of event loop group is an NIO based event loop group.
      * </p>
      */
-    private final EventLoopGroup eventLoopGroup;
+    private EventLoopGroup eventLoopGroup;
 
     /**
      * Host value that this server must listen on.
@@ -47,7 +48,7 @@ public final class Server {
      * The default value is listening on localhost.
      * </p>
      */
-    private final String host;
+    private String host;
 
     /**
      * Port number that this server must listen on.
@@ -55,12 +56,17 @@ public final class Server {
      * The default value is listening on 6666.
      * </p>
      */
-    private final int port;
+    private int port;
+
+    public Server() {
+        super("netty_server");
+    }
 
     /**
      * Default private constructor.
      */
     private Server(EventLoopGroup eventLoopGroup, String host, int port) {
+        this();
         this.eventLoopGroup = eventLoopGroup;
         this.host = host;
         this.port = port;
@@ -72,7 +78,7 @@ public final class Server {
      * @param properties Application properties.
      * @return A newly created and ready to start {@link Server}.
      */
-    public static Server setup(Properties properties) {
+    public Server setup(Properties properties) {
         var os = OSUtil.detectOS();
 
         var eventLoopGroup = os.equals(LINUX) ? new EpollEventLoopGroup() : os.equals(OSX) || os.equals(BSD) ? new KQueueEventLoopGroup() : new NioEventLoopGroup();
@@ -89,7 +95,7 @@ public final class Server {
      * @throws InterruptedException If any exception occurred during bind operation.
      */
     public ChannelFuture start() throws InterruptedException {
-        logger.info("starting server ...");
+        logger.info("starting server on {}:{}...", getHost(), getPort());
         var serverBootstrap = new ServerBootstrap();
 
         serverBootstrap.group(getEventLoopGroup());

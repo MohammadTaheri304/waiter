@@ -1,5 +1,6 @@
 package ir.annotation.waiter.core;
 
+import ir.annotation.waiter.core.procedure.Procedure;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

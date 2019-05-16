@@ -1,6 +1,6 @@
 package ir.annotation.waiter.procedure;
 
-import ir.annotation.waiter.core.AsynchronousProcedure;
+import ir.annotation.waiter.core.procedure.AsynchronousProcedure;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

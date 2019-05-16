@@ -6,11 +6,9 @@ plugins {
     id "com.google.osdetector" version "1.6.2"
 }
 
-String os = osdetector.os
+mainClassName = 'ir.annotation.waiter.App'
 
-repositories {
-    jcenter()
-}
+String os = osdetector.os
 
 dependencies {
     implementation 'com.google.guava:guava:27.0.1-jre'
@@ -29,7 +27,9 @@ dependencies {
     testImplementation 'junit:junit:4.12'
 }
 
-mainClassName = 'ir.annotation.waiter.App'
+repositories {
+    jcenter()
+}
 
 idea {
     module {

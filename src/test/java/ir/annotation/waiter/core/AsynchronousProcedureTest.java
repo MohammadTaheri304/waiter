@@ -1,5 +1,6 @@
 package ir.annotation.waiter.core;
 
+import ir.annotation.waiter.core.procedure.AsynchronousProcedure;
 import org.junit.Test;
 
 import java.util.concurrent.ExecutionException;

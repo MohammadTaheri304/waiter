@@ -1,4 +1,6 @@
-package ir.annotation.waiter.core.common;
+package ir.annotation.waiter.core.procedure;
+
+import ir.annotation.waiter.core.common.Identity;
 
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;

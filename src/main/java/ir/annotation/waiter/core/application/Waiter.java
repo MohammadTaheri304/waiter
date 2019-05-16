@@ -59,7 +59,7 @@ public class Waiter extends Application {
                 }
             }
         } catch (Exception e) {
-            logger.error("startup failed with message {}", e.getMessage());
+            logger.error("loading application properties failed with message {}", e.getMessage());
             System.exit(-1);
         }
     }

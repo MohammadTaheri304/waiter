@@ -51,13 +51,18 @@ final class Context {
      * @param identifier The component's identifier that should be find on context.
      */
     void stopComponentByIdentifier(String identifier) {
-        getComponentByIdentifier(identifier).ifPresent(component -> {
-            try {
-                component.stop();
-            } catch (Exception e) {
-                logger.error("stop call failed on {} with message {}", identifier, e.getMessage());
-            }
-        });
+        requireNonNull(identifier);
+
+        getComponentByIdentifier(identifier).ifPresentOrElse(
+                component -> {
+                    try {
+                        component.stop();
+                    } catch (Exception e) {
+                        logger.error("stop call failed on {} with message {}", component.getIdentifier(), e.getMessage());
+                    }
+                },
+                () -> logger.warn("no component found with {} as identifier!", identifier)
+        );
     }
 
     /**

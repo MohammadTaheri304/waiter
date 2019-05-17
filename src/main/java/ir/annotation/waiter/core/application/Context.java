@@ -13,7 +13,7 @@ import static java.util.Objects.requireNonNull;
  *
  * @author Alireza Pourtaghi
  */
-final class Context {
+public final class Context {
     private static final Logger logger = LoggerFactory.getLogger(Context.class);
 
     /**

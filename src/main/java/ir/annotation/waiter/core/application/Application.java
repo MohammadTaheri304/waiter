@@ -32,7 +32,7 @@ public abstract class Application implements ContextAware {
      * @param component The {@link Component} that should be add to the context.
      * @throws NullPointerException If provided component is {@code null}.
      */
-    protected void addThenStartComponent(Component component) {
+    protected final void addThenStartComponent(Component component) {
         getContext().addThenStartComponent(component);
     }
 
@@ -42,7 +42,7 @@ public abstract class Application implements ContextAware {
      * @param identifier The component's identifier that should be find on context.
      * @throws NullPointerException If provided component is {@code null}.
      */
-    protected void stopComponentByIdentifier(String identifier) {
+    protected final void stopComponentByIdentifier(String identifier) {
         getContext().stopComponentByIdentifier(identifier);
     }
 

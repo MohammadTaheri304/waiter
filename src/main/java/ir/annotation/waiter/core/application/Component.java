@@ -9,9 +9,9 @@ import java.util.Properties;
  * <p>
  * Components can override start method so start will be called on application startup; and also can override stop method so stop will be called on application shutdown.
  * </p>
- * <p>
- * * @param <T> The type of component.
- * * @param <R> The return type of start method. Sometimes useful.
+ *
+ * @param <T> The type of component.
+ * @param <R> The return type of start method. Sometimes useful.
  */
 public abstract class Component<T, R> extends Identity implements ContextAware {
 
@@ -32,16 +32,16 @@ public abstract class Component<T, R> extends Identity implements ContextAware {
     public abstract T setup(Properties properties);
 
     /**
-     * Start will be called on application startup.
+     * Start will be called on application startup to start component running.
      *
      * @throws Exception If component start call failed.
      */
     public abstract R start() throws Exception;
 
     /**
-     * Stop will be called on application shutdown.
-     * <p>
-     * If component stop call failed.
+     * Stop will be called on application shutdown ro stop component from running.
+     *
+     * @throws Exception If component start call failed.
      */
     public abstract void stop() throws Exception;
 }

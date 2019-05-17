@@ -6,7 +6,6 @@ import org.slf4j.LoggerFactory;
 
 import java.io.FileInputStream;
 import java.nio.file.Paths;
-import java.util.Properties;
 
 /**
  * Waiter application main class.
@@ -15,11 +14,6 @@ import java.util.Properties;
  */
 public class Waiter extends Application {
     private static final Logger logger = LoggerFactory.getLogger(Waiter.class);
-
-    /**
-     * Waiter application specific properties.
-     */
-    private final Properties properties = new Properties();
 
     /**
      * Empty constructor.

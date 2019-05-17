@@ -28,9 +28,9 @@ final class Context {
     }
 
     /**
-     * Adds provided component to the default context.
+     * Adds provided component to the context then calls start on it.
      *
-     * @param component The {@link Component} that should be add to context.
+     * @param component The {@link Component} that should be add to the context.
      * @throws NullPointerException If provided component is {@code null}.
      */
     void addComponentThenStart(Component component) {
@@ -49,6 +49,7 @@ final class Context {
      * Stops provided component by calling its stop method.
      *
      * @param identifier The component's identifier that should be find on context.
+     * @throws NullPointerException If provided component is {@code null}.
      */
     void stopComponentByIdentifier(String identifier) {
         requireNonNull(identifier);
@@ -69,7 +70,7 @@ final class Context {
      * Returns back a component from context.
      *
      * @param identifier The component's identifier that should be find on context.
-     * @return Found {@link Component} that has same identifier as provided one.
+     * @return Optional {@link Component} that has same identifier as provided one.
      * @throws NullPointerException If provided identifier is {@code null}.
      */
     Optional<Component> getComponentByIdentifier(String identifier) {

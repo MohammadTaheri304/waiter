@@ -58,20 +58,35 @@ public final class Server extends Component<Server, ChannelFuture> {
 
     /**
      * Maximum amount of read size in kilo bytes.
+     * <p>
+     * Default value is 1024 kb.
+     * </p>
      */
     private int maxReadSize;
 
     /**
      * Maximum amount of individual read size in kilo bytes.
+     * <p>
+     * Default value is 1 kb.
+     * </p>
      */
     private int maxIndividualReadSize;
 
+    /**
+     * Public accessible constructor to identify this component.
+     */
     public Server() {
         super("server");
     }
 
     /**
-     * Default private constructor.
+     * Private constructor to build an instance of this server implementation.
+     *
+     * @param eventLoopGroup        Event loop group that must be assigned to netty server for handling IO operations.
+     * @param host                  Host value that this server must listen on.
+     * @param port                  Port number that this server must listen on.
+     * @param maxReadSize           Maximum amount of read size in kilo bytes.
+     * @param maxIndividualReadSize Maximum amount of individual read size in kilo bytes.
      */
     private Server(EventLoopGroup eventLoopGroup, String host, int port, int maxReadSize, int maxIndividualReadSize) {
         this();

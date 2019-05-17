@@ -13,7 +13,7 @@ import static java.util.Objects.requireNonNull;
  *
  * @author Alireza Pourtaghi
  */
-final class Context {
+public final class Context {
     private static final Logger logger = LoggerFactory.getLogger(Context.class);
 
     /**
@@ -33,7 +33,7 @@ final class Context {
      * @param component The {@link Component} that should be add to the context.
      * @throws NullPointerException If provided component is {@code null}.
      */
-    void addComponentThenStart(Component component) {
+    public void addComponentThenStart(Component component) {
         requireNonNull(component);
 
         try {
@@ -51,7 +51,7 @@ final class Context {
      * @param identifier The component's identifier that should be find on context.
      * @throws NullPointerException If provided component is {@code null}.
      */
-    void stopComponentByIdentifier(String identifier) {
+    public void stopComponentByIdentifier(String identifier) {
         requireNonNull(identifier);
 
         getComponentByIdentifier(identifier).ifPresentOrElse(
@@ -73,7 +73,7 @@ final class Context {
      * @return Optional {@link Component} that has same identifier as provided one.
      * @throws NullPointerException If provided identifier is {@code null}.
      */
-    Optional<Component> getComponentByIdentifier(String identifier) {
+    public Optional<Component> getComponentByIdentifier(String identifier) {
         requireNonNull(identifier);
 
         return components.stream()

@@ -20,7 +20,7 @@ public abstract class Component<T, R> extends Identity implements ContextAware {
      *
      * @param identifier The identifier of component.
      */
-    public Component(String identifier) {
+    protected Component(String identifier) {
         super(identifier);
     }
 
@@ -29,19 +29,19 @@ public abstract class Component<T, R> extends Identity implements ContextAware {
      *
      * @param properties The application properties loaded for application startup.
      */
-    public abstract T setup(Properties properties);
+    protected abstract T setup(Properties properties);
 
     /**
      * Start will be called on application startup to start component running.
      *
      * @throws Exception If component start call failed.
      */
-    public abstract R start() throws Exception;
+    protected abstract R start() throws Exception;
 
     /**
      * Stop will be called on application shutdown ro stop component from running.
      *
      * @throws Exception If component start call failed.
      */
-    public abstract void stop() throws Exception;
+    protected abstract void stop() throws Exception;
 }

@@ -11,4 +11,8 @@ interface ContextAware {
      * Context that is shared between all {@link ContextAware} instances. The default context is an empty one.
      */
     Context context = new Context();
+
+    default Context getContext() {
+        return context;
+    }
 }

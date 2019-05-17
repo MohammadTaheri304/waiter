@@ -95,7 +95,7 @@ public final class Server extends Component<Server, ChannelFuture> {
      * @throws InterruptedException If any exception occurred during bind operation.
      */
     public ChannelFuture start() throws InterruptedException {
-        logger.info("starting server on {}:{}...", getHost(), getPort());
+        logger.info("starting server on {}:{} ...", getHost(), getPort());
         var serverBootstrap = new ServerBootstrap();
 
         serverBootstrap.group(getEventLoopGroup());

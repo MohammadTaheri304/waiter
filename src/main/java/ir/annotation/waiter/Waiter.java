@@ -1,5 +1,6 @@
-package ir.annotation.waiter.core.application;
+package ir.annotation.waiter;
 
+import ir.annotation.waiter.core.application.Application;
 import ir.annotation.waiter.server.Server;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +25,7 @@ public class Waiter extends Application {
     @Override
     public void start(String[] args) {
         loadProperties(args);
-        context.addComponentThenStart(new Server().setup(properties));
+        context.addComponentThenStart(new Server().setup(getProperties()));
     }
 
     @Override
@@ -42,14 +43,14 @@ public class Waiter extends Application {
         try {
             try (var resourceReader = ClassLoader.getSystemClassLoader().getResourceAsStream("application.properties")) {
                 if (resourceReader != null) {
-                    properties.load(resourceReader);
+                    getProperties().load(resourceReader);
                 }
             }
 
             if (args.length == 2 && args[0].equals("--properties")) {
                 logger.info("loading application properties from {} ...", args[1]);
                 try (var fileReader = new FileInputStream(Paths.get(args[1]).toFile())) {
-                    properties.load(fileReader);
+                    getProperties().load(fileReader);
                 }
             }
         } catch (Exception e) {

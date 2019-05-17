@@ -7,22 +7,26 @@ import java.util.Properties;
  *
  * @author Alireza Pourtaghi
  */
-abstract class Application implements ContextAware {
+public abstract class Application implements ContextAware {
 
     /**
      * Application specific properties. The default properties are empty.
      */
-    final Properties properties = new Properties();
+    private final Properties properties = new Properties();
 
     /**
      * Method that is called to start application.
      *
      * @param args Argument list passed to start method. Can be command line arguments and options.
      */
-    abstract void start(String[] args);
+    protected abstract void start(String[] args);
 
     /**
      * Method that is called to stop application.
      */
-    abstract void stop();
+    protected abstract void stop();
+
+    public Properties getProperties() {
+        return properties;
+    }
 }

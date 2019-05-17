@@ -1,13 +1,11 @@
 package ir.annotation.waiter;
 
-import ir.annotation.waiter.core.application.Waiter;
-
 /**
  * Main application class that includes main method.
  *
  * @author Alireza Pourtaghi
  */
-public final class App {
+public final class Main {
 
     /**
      * Main method that is invoked by JVM to start application.

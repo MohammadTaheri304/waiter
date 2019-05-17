@@ -26,7 +26,27 @@ public abstract class Application implements ContextAware {
      */
     protected abstract void stop();
 
-    public Properties getProperties() {
+    /**
+     * Adds provided component to the context then calls start on it.
+     *
+     * @param component The {@link Component} that should be add to the context.
+     * @throws NullPointerException If provided component is {@code null}.
+     */
+    protected void addThenStartComponent(Component component) {
+        getContext().addThenStartComponent(component);
+    }
+
+    /**
+     * Stops provided component by calling its stop method.
+     *
+     * @param identifier The component's identifier that should be find on context.
+     * @throws NullPointerException If provided component is {@code null}.
+     */
+    protected void stopComponentByIdentifier(String identifier) {
+        getContext().stopComponentByIdentifier(identifier);
+    }
+
+    protected Properties getProperties() {
         return properties;
     }
 }

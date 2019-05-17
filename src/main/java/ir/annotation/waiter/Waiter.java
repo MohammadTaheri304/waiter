@@ -25,12 +25,12 @@ public class Waiter extends Application {
     @Override
     public void start(String[] args) {
         loadProperties(args);
-        context.addComponentThenStart(new Server().setup(getProperties()));
+        addThenStartComponent(new Server().setup(getProperties()));
     }
 
     @Override
     public void stop() {
-        context.stopComponentByIdentifier("netty_server");
+        stopComponentByIdentifier("netty_server");
     }
 
     /**

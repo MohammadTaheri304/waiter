@@ -30,13 +30,13 @@ public class Waiter extends Application {
 
     @Override
     public void stop() {
-        stopComponentByIdentifier("netty_server");
+        stopComponentByIdentifier("server");
     }
 
     /**
      * Tries to load application properties from application.properties file located on resources folder of running app.
      * <p>
-     * If the application started with -P or --properties flag the provided file path will be used to load application properties and overwrites the values loaded from application.properties.
+     * If the application started with --properties flag, the provided file path will be used to load application properties and overwrites the values loaded from application.properties located in resources folder.
      * </p>
      */
     private void loadProperties(String[] args) {

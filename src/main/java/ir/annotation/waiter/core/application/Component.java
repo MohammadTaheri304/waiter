@@ -28,12 +28,14 @@ public abstract class Component<T, R> extends Identity implements ContextAware {
      * Setups the component by using provided properties.
      *
      * @param properties The application properties loaded for application startup.
+     * @return The component itself, ready to call start.
      */
     protected abstract T setup(Properties properties);
 
     /**
      * Start will be called on application startup to start component running.
      *
+     * @return The return value of starting component. May be useful on asynchronous start call types.
      * @throws Exception If component start call failed.
      */
     protected abstract R start() throws Exception;

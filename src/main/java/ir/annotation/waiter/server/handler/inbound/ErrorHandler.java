@@ -1,4 +1,4 @@
-package ir.annotation.waiter.server.handler;
+package ir.annotation.waiter.server.handler.inbound;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -15,9 +15,9 @@ import static ir.annotation.waiter.util.MessagePackUtil.*;
  * @author Alireza Pourtaghi
  */
 @Sharable
-public class ChannelInboundErrorHandler extends ChannelInboundHandlerAdapter {
+public class ErrorHandler extends ChannelInboundHandlerAdapter {
 
-    ChannelInboundErrorHandler() {
+    public ErrorHandler() {
     }
 
     @Override
@@ -26,7 +26,7 @@ public class ChannelInboundErrorHandler extends ChannelInboundHandlerAdapter {
             if (cause instanceof Error) {
                 try (var buffer = MessagePack.newDefaultBufferPacker()) {
                     buffer.packValue(buildErrorMessage((Error) cause));
-                    var bytesOut = ctx.alloc().directBuffer((int) buffer.getTotalWrittenBytes());
+                    var bytesOut = ctx.alloc().buffer((int) buffer.getTotalWrittenBytes()); // Default to allocate direct buffer.
                     bytesOut.writeBytes(buffer.toByteArray());
                     ctx.writeAndFlush(bytesOut);
                 }

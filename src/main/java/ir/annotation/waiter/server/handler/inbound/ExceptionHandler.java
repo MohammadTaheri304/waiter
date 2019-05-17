@@ -1,4 +1,4 @@
-package ir.annotation.waiter.server.handler;
+package ir.annotation.waiter.server.handler.inbound;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -20,15 +20,15 @@ import static ir.annotation.waiter.util.MessagePackUtil.*;
  * @author Alireza Pourtaghi
  */
 @Sharable
-public class ChannelInboundExceptionHandler extends ChannelInboundHandlerAdapter {
-    private static final Logger logger = LoggerFactory.getLogger(ChannelInboundExceptionHandler.class);
+public class ExceptionHandler extends ChannelInboundHandlerAdapter {
+    private static final Logger logger = LoggerFactory.getLogger(ExceptionHandler.class);
 
     /**
      * Appropriate binary message for internal server error.
      */
     private final Value internalServerErrorMessage;
 
-    ChannelInboundExceptionHandler() {
+    public ExceptionHandler() {
         internalServerErrorMessage = map(
                 string("succ"), bool(false),
                 string("errs"), array(map(
@@ -45,7 +45,7 @@ public class ChannelInboundExceptionHandler extends ChannelInboundHandlerAdapter
 
             try (var buffer = MessagePack.newDefaultBufferPacker()) {
                 buffer.packValue(internalServerErrorMessage);
-                var bytesOut = ctx.alloc().directBuffer((int) buffer.getTotalWrittenBytes());
+                var bytesOut = ctx.alloc().buffer((int) buffer.getTotalWrittenBytes()); // Default to allocate direct buffer.
                 bytesOut.writeBytes(buffer.toByteArray());
                 ctx.writeAndFlush(bytesOut);
             }

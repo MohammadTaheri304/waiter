@@ -1,9 +1,7 @@
 package ir.annotation.waiter.server;
 
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelInitializer;
-import io.netty.channel.EventLoopGroup;
+import io.netty.channel.*;
 import io.netty.channel.epoll.EpollEventLoopGroup;
 import io.netty.channel.epoll.EpollServerSocketChannel;
 import io.netty.channel.kqueue.KQueueEventLoopGroup;
@@ -58,18 +56,30 @@ public final class Server extends Component<Server, ChannelFuture> {
      */
     private int port;
 
+    /**
+     * Maximum amount of read size in kilo bytes.
+     */
+    private int maxReadSize;
+
+    /**
+     * Maximum amount of individual read size in kilo bytes.
+     */
+    private int maxIndividualReadSize;
+
     public Server() {
-        super("netty_server");
+        super("server");
     }
 
     /**
      * Default private constructor.
      */
-    private Server(EventLoopGroup eventLoopGroup, String host, int port) {
+    private Server(EventLoopGroup eventLoopGroup, String host, int port, int maxReadSize, int maxIndividualReadSize) {
         this();
         this.eventLoopGroup = eventLoopGroup;
         this.host = host;
         this.port = port;
+        this.maxReadSize = maxReadSize;
+        this.maxIndividualReadSize = maxIndividualReadSize;
     }
 
     /**
@@ -84,8 +94,10 @@ public final class Server extends Component<Server, ChannelFuture> {
         var eventLoopGroup = os.equals(LINUX) ? new EpollEventLoopGroup() : os.equals(OSX) || os.equals(BSD) ? new KQueueEventLoopGroup() : new NioEventLoopGroup();
         var host = properties.getOrDefault("server.host", "0.0.0.0").toString();
         var port = Integer.parseInt(properties.getOrDefault("server.port", "6666").toString());
+        var maxReadSize = Integer.parseInt(properties.getOrDefault("server.max-read-size.kb", "1024").toString());
+        var maxIndividualReadSize = Integer.parseInt(properties.getOrDefault("server.max-individual-read-size.kb", "1").toString());
 
-        return new Server(eventLoopGroup, host, port);
+        return new Server(eventLoopGroup, host, port, maxReadSize, maxIndividualReadSize);
     }
 
     /**
@@ -109,6 +121,7 @@ public final class Server extends Component<Server, ChannelFuture> {
             serverBootstrap.channel(KQueueServerSocketChannel.class);
         }
         serverBootstrap.localAddress(getHost(), getPort());
+        serverBootstrap.childOption(ChannelOption.RCVBUF_ALLOCATOR, new DefaultMaxBytesRecvByteBufAllocator(getMaxReadSize() * 1024, getMaxIndividualReadSize() * 1024));
         serverBootstrap.childHandler(channelInitializer);
 
         return serverBootstrap.bind().sync();
@@ -124,15 +137,23 @@ public final class Server extends Component<Server, ChannelFuture> {
         eventLoopGroup.shutdownGracefully().sync();
     }
 
-    public EventLoopGroup getEventLoopGroup() {
+    private EventLoopGroup getEventLoopGroup() {
         return eventLoopGroup;
     }
 
-    public String getHost() {
+    private String getHost() {
         return host;
     }
 
-    public int getPort() {
+    private int getPort() {
         return port;
+    }
+
+    private int getMaxReadSize() {
+        return maxReadSize;
+    }
+
+    private int getMaxIndividualReadSize() {
+        return maxIndividualReadSize;
     }
 }

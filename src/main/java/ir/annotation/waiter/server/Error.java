@@ -28,6 +28,7 @@ public class Error extends RuntimeException {
      */
     public enum Reason {
         INTERNAL_SERVER_ERROR(new Error("internal.server.error", "Internal server error.")),
+        INVALID_MESSAGE_FORMAT(new Error("invalid.message.format", "Message format is not valid. See specification.")),
         RESOURCE_NOT_FOUND(new Error("resource.not.found", "The requested resource not found."));
 
         /**

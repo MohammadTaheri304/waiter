@@ -46,7 +46,7 @@ public abstract class Application implements ContextAware {
         getContext().stopComponentByIdentifier(identifier);
     }
 
-    protected Properties getProperties() {
+    protected final Properties getProperties() {
         return properties;
     }
 }

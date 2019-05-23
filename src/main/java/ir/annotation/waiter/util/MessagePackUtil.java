@@ -1,10 +1,7 @@
 package ir.annotation.waiter.util;
 
 import org.msgpack.value.*;
-import org.msgpack.value.impl.ImmutableArrayValueImpl;
-import org.msgpack.value.impl.ImmutableBooleanValueImpl;
-import org.msgpack.value.impl.ImmutableMapValueImpl;
-import org.msgpack.value.impl.ImmutableStringValueImpl;
+import org.msgpack.value.impl.*;
 
 /**
  * Utility class that is useful to generate message pack's {@link Value}s.
@@ -12,6 +9,16 @@ import org.msgpack.value.impl.ImmutableStringValueImpl;
  * @author Alireza Pourtaghi
  */
 public class MessagePackUtil {
+
+    /**
+     * Generates a message pack's map format.
+     *
+     * @param keyValues The map elements.
+     * @return Newly created and ready to use {@link ImmutableMapValueImpl}.
+     */
+    public static ImmutableMapValue map(Value... keyValues) {
+        return new ImmutableMapValueImpl(keyValues);
+    }
 
     /**
      * Generates a message pack's array format.
@@ -24,13 +31,13 @@ public class MessagePackUtil {
     }
 
     /**
-     * Generates a message pack's map format.
+     * Generates a message pack's string format.
      *
-     * @param keyValues The map elements.
-     * @return Newly created and ready to use {@link ImmutableMapValueImpl}.
+     * @param value The string value.
+     * @return Newly created and ready to use {@link ImmutableStringValueImpl}.
      */
-    public static ImmutableMapValue map(Value... keyValues) {
-        return new ImmutableMapValueImpl(keyValues);
+    public static ImmutableStringValue string(String value) {
+        return new ImmutableStringValueImpl(value);
     }
 
     /**
@@ -44,12 +51,12 @@ public class MessagePackUtil {
     }
 
     /**
-     * Generates a message pack's string format.
+     * Generates a message pack's binary format.
      *
-     * @param value The string value.
-     * @return Newly created and ready to use {@link ImmutableStringValueImpl}.
+     * @param value The byte array value.
+     * @return Newly created and ready to use {@link ImmutableBinaryValueImpl}.
      */
-    public static ImmutableStringValue string(String value) {
-        return new ImmutableStringValueImpl(value);
+    public static ImmutableBinaryValueImpl bytes(byte[] value) {
+        return new ImmutableBinaryValueImpl(value);
     }
 }

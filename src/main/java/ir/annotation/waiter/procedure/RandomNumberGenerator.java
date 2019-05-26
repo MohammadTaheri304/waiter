@@ -12,7 +12,7 @@ import java.util.concurrent.ExecutorService;
  *
  * @author Alireza Pourtaghi
  */
-public class SecureRandomNumberGenerator extends AsynchronousProcedure<Void, Integer> {
+public class RandomNumberGenerator extends AsynchronousProcedure<Void, Integer> {
     /**
      * Java's secure random instance.
      */
@@ -21,8 +21,8 @@ public class SecureRandomNumberGenerator extends AsynchronousProcedure<Void, Int
     /**
      * Constructor to create an instance of this procedure.
      */
-    public SecureRandomNumberGenerator() {
-        super("generate_secure_random_number");
+    public RandomNumberGenerator() {
+        super("generate_random_number");
         this.secureRandom = new SecureRandom();
     }
 

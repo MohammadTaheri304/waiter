@@ -22,19 +22,17 @@ public class ErrorHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        try {
-            if (cause instanceof Error) {
-                try (var buffer = MessagePack.newDefaultBufferPacker()) {
-                    buffer.packValue(buildErrorMessage((Error) cause));
-                    var bytesOut = ctx.alloc().buffer((int) buffer.getTotalWrittenBytes()); // Default to allocate direct buffer.
-                    bytesOut.writeBytes(buffer.toByteArray());
-                    ctx.writeAndFlush(bytesOut);
-                }
-            } else {
-                ctx.fireExceptionCaught(cause);
+        if (cause instanceof Error) {
+            try (var buffer = MessagePack.newDefaultBufferPacker()) {
+                buffer.packValue(buildErrorMessage((Error) cause));
+                var bytesOut = ctx.alloc().buffer((int) buffer.getTotalWrittenBytes()); // Default to allocate direct buffer.
+                bytesOut.writeBytes(buffer.toByteArray());
+                ctx.writeAndFlush(bytesOut);
+            } finally {
+                ctx.close();
             }
-        } finally {
-            ctx.close();
+        } else {
+            ctx.fireExceptionCaught(cause);
         }
     }
 

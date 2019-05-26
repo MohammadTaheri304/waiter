@@ -12,10 +12,9 @@ You can call provided procedures with the following structure using [MessagePack
 
 ```
 {
-    "proc": "generate_secure_random_number",
+    "proc": "generate_random_number",
     "atts": [
-        {"access_token" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"},
-        {"client_ip" : "127.0.0.1"}
+        {"access_token" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"}
     ],
     "iput": {
         "from": 111111,
@@ -34,7 +33,7 @@ The server will respond to your call with the following structure, again using [
 {
     "succ": true,
     "atts": [
-            {"server_ip" : "127.0.0.1"}
+            {"response_time" : 10}
     ],
     "oput": 243459
 }

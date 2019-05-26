@@ -15,6 +15,9 @@ import java.util.List;
  */
 public class MessageDecoder extends ByteToMessageDecoder {
 
+    public MessageDecoder() {
+    }
+
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
         var readableBytes = in.readableBytes();
@@ -25,8 +28,8 @@ public class MessageDecoder extends ByteToMessageDecoder {
             var message = buffer.unpackValue();
             if (!message.isMapValue())
                 ctx.fireExceptionCaught(Error.Reason.INVALID_MESSAGE_FORMAT.getError());
-
-            out.add(message);
+            else
+                out.add(message);
         }
     }
 }

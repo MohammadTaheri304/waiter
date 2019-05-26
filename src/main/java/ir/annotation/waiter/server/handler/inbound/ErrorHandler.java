@@ -7,7 +7,7 @@ import org.msgpack.core.MessagePack;
 import org.msgpack.value.Value;
 
 import static io.netty.channel.ChannelHandler.Sharable;
-import static ir.annotation.waiter.util.MessagePackUtil.*;
+import static ir.annotation.waiter.server.util.MessagePackUtil.*;
 
 /**
  * Channel inbound error handler to handle all kind of errors.
@@ -17,6 +17,9 @@ import static ir.annotation.waiter.util.MessagePackUtil.*;
 @Sharable
 public class ErrorHandler extends ChannelInboundHandlerAdapter {
 
+    /**
+     * Empty constructor.
+     */
     public ErrorHandler() {
     }
 

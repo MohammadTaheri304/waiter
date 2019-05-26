@@ -11,13 +11,13 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import ir.annotation.waiter.core.application.Component;
 import ir.annotation.waiter.server.handler.Initializer;
-import ir.annotation.waiter.util.OSUtil;
+import ir.annotation.waiter.server.util.OSUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Properties;
 
-import static ir.annotation.waiter.util.OSUtil.OS.*;
+import static ir.annotation.waiter.server.util.OSUtil.OS.*;
 
 /**
  * A netty based server socket implementation.
@@ -29,33 +29,21 @@ public final class Server extends Component<Server, ChannelFuture> {
 
     /**
      * Event loop group that must be assigned to netty server for handling IO operations.
-     * <p>
-     * The default value of event loop group is an NIO based event loop group.
-     * </p>
      */
     private EventLoopGroup eventLoopGroup;
 
     /**
      * Host value that this server must listen on.
-     * <p>
-     * The default value is listening on localhost.
-     * </p>
      */
     private String host;
 
     /**
      * Port number that this server must listen on.
-     * <p>
-     * The default value is listening on 6666.
-     * </p>
      */
     private int port;
 
     /**
      * Maximum amount of frame size in kilo bytes.
-     * <p>
-     * Default value is 1024 kb.
-     * </p>
      */
     private int maxFrameSize;
 

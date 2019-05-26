@@ -1,50 +1,13 @@
-## waiter
-Low level (non-http), light and fast µ-server.
+## Waiter
+Simple, light and fast µ-server.
 
-### About waiter
-Waiter is a server not a framework, so provides some common functionality ready to use.
-- It is written based on non-blocking and asynchronous networking principles.
+### About
+Waiter is a server not a framework, so provides some common services ready to use.
+- It is written based on asynchronous and non-blocking networking principles.
 - It has its own rules and protocol, [MessagePack](https://msgpack.org/index.html) is used for serialization.
-- You can think of it as a RPC tool, you only call some remote procedure with your input data, and it will return back to you with appropriate output.
+- Like an RPC tool; Call some remote procedure with your input data, and it will return back to you with appropriate output.
 
-#### How to call procedures?
-You can call provided procedures with the following structure using [MessagePack](https://msgpack.org/index.html):
-
-```
-{
-    "proc": "generate_random_number",
-    "atts": [
-        {"access_token" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"}
-    ],
-    "iput": {
-        "from": 111111,
-        "to": 999999
-    }
-}
-```
-- proc (Required): Procedure name.
-- atts (Optional): An array of key-value pair attributes.
-- iput (Optional): Input data that must be sent to procedure.
-
-#### What about response?
-The server will respond to your call with the following structure, again using [MessagePack](https://msgpack.org/index.html):
-
-```
-{
-    "succ": true,
-    "atts": [
-            {"response_time" : 10}
-    ],
-    "oput": 243459
-}
-```
-- succ (Required): Determines whether the procedure call was successful or not. Possible values are `true` and `false`.
-- atts (Optional): An array of key-value pair attributes.
-- errs (Optional): An array of errors occurred when procedure call was not successful.
-    - Array elements are an object with two fields, `code` as error code and `mess` as error message.
-- oput (Optional): Output data (if any) that received from procedure call.
-
-### Prerequisites to develop and test this project
+### Prerequisites to develop and test
 - JDK 11 (JavaSE 11)
 - Gradle 5.3+
 

@@ -15,6 +15,9 @@ import java.util.List;
  */
 public class MessageDecoder extends ByteToMessageDecoder {
 
+    /**
+     * Empty constructor.
+     */
     public MessageDecoder() {
     }
 

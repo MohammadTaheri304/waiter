@@ -1,4 +1,4 @@
-package ir.annotation.waiter.util;
+package ir.annotation.waiter.server.util;
 
 import java.util.Locale;
 

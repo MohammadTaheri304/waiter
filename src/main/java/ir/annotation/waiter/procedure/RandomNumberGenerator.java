@@ -8,11 +8,11 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 
 /**
- * A random number generator that generates numbers from 111111 to 999999 inclusive.
+ * A random number generator that generates numbers in different ranges.
  *
  * @author Alireza Pourtaghi
  */
-public class RandomNumberGenerator extends AsynchronousProcedure<Void, Integer> {
+public class RandomNumberGenerator extends AsynchronousProcedure<RandomNumberGenerator.GenerateRandomNumberRequest, Integer> {
     /**
      * Java's secure random instance.
      */
@@ -27,7 +27,43 @@ public class RandomNumberGenerator extends AsynchronousProcedure<Void, Integer> 
     }
 
     @Override
-    public CompletableFuture<Optional<Integer>> apply(ExecutorService executor, Void aVoid) {
-        return CompletableFuture.supplyAsync(() -> Optional.of(111111 + secureRandom.nextInt(888888 + 1)), executor);
+    public CompletableFuture<Optional<Integer>> apply(ExecutorService executor, GenerateRandomNumberRequest generateRandomNumberRequest) {
+        return CompletableFuture.supplyAsync(() -> Optional.of(generateRandomNumberRequest.getFromInclusive() + secureRandom.nextInt(generateRandomNumberRequest.getToInclusive() + 1)), executor);
+    }
+
+    /**
+     * Generate random number request model.
+     *
+     * @author Alireza Pourtaghi
+     */
+    public static final class GenerateRandomNumberRequest {
+        /**
+         * Generated random number will be greater than or equal to this field.
+         */
+        private final int fromInclusive;
+
+        /**
+         * Generated random number will be less than or equal to this field.
+         */
+        private final int toInclusive;
+
+        /**
+         * Constructor to create an instance of this model.
+         *
+         * @param fromInclusive Generated random number will be greater than or equal to this field.
+         * @param toInclusive   Generated random number will be less than or equal to this field.
+         */
+        public GenerateRandomNumberRequest(int fromInclusive, int toInclusive) {
+            this.fromInclusive = fromInclusive;
+            this.toInclusive = toInclusive;
+        }
+
+        public int getFromInclusive() {
+            return fromInclusive;
+        }
+
+        public int getToInclusive() {
+            return toInclusive;
+        }
     }
 }

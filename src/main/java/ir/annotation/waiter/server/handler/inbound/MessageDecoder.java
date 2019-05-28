@@ -23,11 +23,10 @@ public class MessageDecoder extends ByteToMessageDecoder {
 
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
-        var readableBytes = in.readableBytes();
-        var array = new byte[readableBytes];
-        in.readBytes(array);
+        var bytes = new byte[in.readableBytes()];
+        in.readBytes(bytes);
 
-        try (var buffer = MessagePack.newDefaultUnpacker(array)) {
+        try (var buffer = MessagePack.newDefaultUnpacker(bytes)) {
             var message = buffer.unpackValue();
             if (!message.isMapValue())
                 ctx.fireExceptionCaught(Error.Reason.INVALID_MESSAGE_FORMAT.getError());

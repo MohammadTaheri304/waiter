@@ -23,7 +23,7 @@ public class Initializer extends ChannelInitializer<SocketChannel> {
     /**
      * Delimiter bytes.
      */
-    private static final ImmutableBinaryValueImpl delimiterBytes = bytes(new byte[]{'\r', '\n', '\r', '\n'});
+    private static final ImmutableBinaryValueImpl DELIMITER_BYTES = bytes(new byte[]{'\r', '\n', '\r', '\n'});
 
     /**
      * Maximum amount of frame size in kilo bytes.
@@ -52,7 +52,7 @@ public class Initializer extends ChannelInitializer<SocketChannel> {
     @Override
     protected void initChannel(SocketChannel socketChannel) throws Exception {
         try (var buffer = MessagePack.newDefaultBufferPacker()) {
-            buffer.packValue(delimiterBytes);
+            buffer.packValue(DELIMITER_BYTES);
             var frameDelimiter = Unpooled.buffer((int) buffer.getTotalWrittenBytes());
             frameDelimiter.writeBytes(buffer.toByteArray());
 

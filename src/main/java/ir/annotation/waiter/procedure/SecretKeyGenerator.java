@@ -2,6 +2,7 @@ package ir.annotation.waiter.procedure;
 
 import ir.annotation.waiter.core.procedure.AsynchronousProcedure;
 
+import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import java.security.SecureRandom;
 import java.util.Optional;
@@ -27,7 +28,7 @@ public class SecretKeyGenerator extends AsynchronousProcedure<SecretKeyGenerator
     public CompletableFuture<Optional<SecretKey>> apply(ExecutorService executor, GenerateSecretKeyRequest generateSecretKeyRequest) {
         return CompletableFuture.supplyAsync(() -> {
             try {
-                var keyGenerator = javax.crypto.KeyGenerator.getInstance(generateSecretKeyRequest.getAlgorithm().name());
+                var keyGenerator = KeyGenerator.getInstance(generateSecretKeyRequest.getAlgorithm().name());
                 keyGenerator.init(generateSecretKeyRequest.getKeySize().getSize(), generateSecretKeyRequest.getSecureRandom());
 
                 return Optional.of(keyGenerator.generateKey());

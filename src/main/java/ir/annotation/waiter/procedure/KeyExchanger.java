@@ -3,10 +3,12 @@ package ir.annotation.waiter.procedure;
 import ir.annotation.waiter.core.procedure.AsynchronousProcedure;
 
 import javax.crypto.KeyAgreement;
-import java.security.*;
+import java.security.Key;
+import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.security.SecureRandom;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CompletionException;
 import java.util.concurrent.ExecutorService;
 
 /**
@@ -15,33 +17,40 @@ import java.util.concurrent.ExecutorService;
  * @author Alireza Pourtaghi
  */
 public class KeyExchanger extends AsynchronousProcedure<KeyExchanger.KeyExchangeRequest, KeyExchanger.KeyExchangeResponse> {
+    private final PublicPrivateKeyPairGenerator publicPrivateKeyPairGenerator;
 
     /**
      * Constructor to create an instance of this procedure.
      */
     public KeyExchanger() {
         super("exchange_key");
+        this.publicPrivateKeyPairGenerator = new PublicPrivateKeyPairGenerator();
     }
 
     @Override
     public CompletableFuture<Optional<KeyExchangeResponse>> apply(ExecutorService executor, KeyExchangeRequest keyExchangeRequest) {
-        return CompletableFuture.supplyAsync(() -> {
+        var generateKeyPairRequest = new PublicPrivateKeyPairGenerator.GenerateKeyPairRequest(
+                keyExchangeRequest.getSecureRandom(),
+                PublicPrivateKeyPairGenerator.GenerateKeyPairRequest.Algorithm.valueOf(keyExchangeRequest.getAlgorithm().name()),
+                PublicPrivateKeyPairGenerator.GenerateKeyPairRequest.KeySize.valueOf(keyExchangeRequest.getKeySize().name())
+        );
+
+        return publicPrivateKeyPairGenerator.apply(executor, generateKeyPairRequest).thenApply(keyPair -> {
             try {
-                var keyPairGenerator = KeyPairGenerator.getInstance(keyExchangeRequest.getAlgorithm().name());
-                keyPairGenerator.initialize(keyExchangeRequest.getKeySize().getSize(), keyExchangeRequest.getSecureRandom());
+                if (keyPair.isPresent()) {
+                    var keyAgreement = KeyAgreement.getInstance(keyExchangeRequest.getAlgorithm().name());
+                    keyAgreement.init(keyPair.get().getPrivate(), keyExchangeRequest.getSecureRandom());
+                    keyAgreement.doPhase(keyExchangeRequest.getOtherPartyKey(), true);
+                    var secretKey = keyAgreement.generateSecret();
 
-                var keyPair = keyPairGenerator.generateKeyPair();
-
-                var keyAgreement = KeyAgreement.getInstance(keyExchangeRequest.getAlgorithm().name());
-                keyAgreement.init(keyPair.getPrivate(), keyExchangeRequest.getSecureRandom());
-                keyAgreement.doPhase(keyExchangeRequest.getOtherPartyKey(), true);
-                var secretKey = keyAgreement.generateSecret();
-
-                return Optional.of(new KeyExchangeResponse(keyPair.getPrivate(), keyPair.getPublic(), secretKey));
+                    return Optional.of(new KeyExchangeResponse(keyPair.get().getPrivate(), keyPair.get().getPublic(), secretKey));
+                } else {
+                    return Optional.empty();
+                }
             } catch (Exception e) {
-                throw new CompletionException(e);
+                throw new RuntimeException(e);
             }
-        }, executor);
+        });
     }
 
     /**

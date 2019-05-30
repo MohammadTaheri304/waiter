@@ -13,22 +13,17 @@ import java.util.concurrent.ExecutorService;
  * @author Alireza Pourtaghi
  */
 public class RandomNumberGenerator extends AsynchronousProcedure<RandomNumberGenerator.GenerateRandomNumberRequest, Integer> {
-    /**
-     * Java's secure random instance.
-     */
-    private final SecureRandom secureRandom;
 
     /**
      * Constructor to create an instance of this procedure.
      */
     public RandomNumberGenerator() {
         super("generate_random_number");
-        this.secureRandom = new SecureRandom();
     }
 
     @Override
     public CompletableFuture<Optional<Integer>> apply(ExecutorService executor, GenerateRandomNumberRequest generateRandomNumberRequest) {
-        return CompletableFuture.supplyAsync(() -> Optional.of(generateRandomNumberRequest.getFromInclusive() + secureRandom.nextInt(generateRandomNumberRequest.getToInclusive() + 1)), executor);
+        return CompletableFuture.supplyAsync(() -> Optional.of(generateRandomNumberRequest.getFrom() + generateRandomNumberRequest.getSecureRandom().nextInt(generateRandomNumberRequest.getTo() + 1)), executor);
     }
 
     /**
@@ -38,32 +33,55 @@ public class RandomNumberGenerator extends AsynchronousProcedure<RandomNumberGen
      */
     public static final class GenerateRandomNumberRequest {
         /**
+         * Source of randomness.
+         */
+        private final SecureRandom secureRandom;
+
+        /**
          * Generated random number will be greater than or equal to this field.
          */
-        private final int fromInclusive;
+        private final int from;
 
         /**
          * Generated random number will be less than or equal to this field.
          */
-        private final int toInclusive;
+        private final int to;
 
         /**
          * Constructor to create an instance of this model.
          *
-         * @param fromInclusive Generated random number will be greater than or equal to this field.
-         * @param toInclusive   Generated random number will be less than or equal to this field.
+         * @param from Generated random number will be greater than or equal to this field.
+         * @param to   Generated random number will be less than or equal to this field.
          */
-        public GenerateRandomNumberRequest(int fromInclusive, int toInclusive) {
-            this.fromInclusive = fromInclusive;
-            this.toInclusive = toInclusive;
+        public GenerateRandomNumberRequest(int from, int to) {
+            this.secureRandom = new SecureRandom();
+            this.from = from;
+            this.to = to;
         }
 
-        public int getFromInclusive() {
-            return fromInclusive;
+        /**
+         * Constructor to create an instance of this model.
+         *
+         * @param secureRandom Source of randomness.
+         * @param from         Generated random number will be greater than or equal to this field.
+         * @param to           Generated random number will be less than or equal to this field.
+         */
+        public GenerateRandomNumberRequest(SecureRandom secureRandom, int from, int to) {
+            this.secureRandom = secureRandom;
+            this.from = from;
+            this.to = to;
         }
 
-        public int getToInclusive() {
-            return toInclusive;
+        public SecureRandom getSecureRandom() {
+            return secureRandom;
+        }
+
+        public int getFrom() {
+            return from;
+        }
+
+        public int getTo() {
+            return to;
         }
     }
 }

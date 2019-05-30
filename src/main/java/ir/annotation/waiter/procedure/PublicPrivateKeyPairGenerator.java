@@ -7,7 +7,6 @@ import java.security.KeyPairGenerator;
 import java.security.SecureRandom;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CompletionException;
 import java.util.concurrent.ExecutorService;
 
 /**
@@ -33,7 +32,7 @@ public class PublicPrivateKeyPairGenerator extends AsynchronousProcedure<PublicP
 
                 return Optional.of(keyPairGenerator.generateKeyPair());
             } catch (Exception e) {
-                throw new CompletionException(e);
+                throw new RuntimeException(e);
             }
         }, executor);
     }
@@ -58,6 +57,18 @@ public class PublicPrivateKeyPairGenerator extends AsynchronousProcedure<PublicP
          * Key size of generated public-private key pair.
          */
         private final KeySize keySize;
+
+        /**
+         * Constructor to create an instance of this model.
+         *
+         * @param algorithm The algorithm to use for public-private key pair generator.
+         * @param keySize   Key size of generated public-private key pair.
+         */
+        public GenerateKeyPairRequest(Algorithm algorithm, KeySize keySize) {
+            this.secureRandom = new SecureRandom();
+            this.algorithm = algorithm;
+            this.keySize = keySize;
+        }
 
         /**
          * Constructor to create an instance of this model.

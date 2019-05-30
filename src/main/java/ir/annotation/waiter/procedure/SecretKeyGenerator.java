@@ -7,7 +7,6 @@ import javax.crypto.SecretKey;
 import java.security.SecureRandom;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CompletionException;
 import java.util.concurrent.ExecutorService;
 
 /**
@@ -33,7 +32,7 @@ public class SecretKeyGenerator extends AsynchronousProcedure<SecretKeyGenerator
 
                 return Optional.of(keyGenerator.generateKey());
             } catch (Exception e) {
-                throw new CompletionException(e);
+                throw new RuntimeException(e);
             }
         }, executor);
     }
@@ -58,6 +57,18 @@ public class SecretKeyGenerator extends AsynchronousProcedure<SecretKeyGenerator
          * Key size of generated secret key.
          */
         private final KeySize keySize;
+
+        /**
+         * Constructor to create an instance of this model.
+         *
+         * @param algorithm The algorithm to use for secret key generator.
+         * @param keySize   Key size of generated secret key.
+         */
+        public GenerateSecretKeyRequest(Algorithm algorithm, KeySize keySize) {
+            this.secureRandom = new SecureRandom();
+            this.algorithm = algorithm;
+            this.keySize = keySize;
+        }
 
         /**
          * Constructor to create an instance of this model.

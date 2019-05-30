@@ -17,6 +17,9 @@ import java.util.concurrent.ExecutorService;
  * @author Alireza Pourtaghi
  */
 public class KeyExchanger extends AsynchronousProcedure<KeyExchanger.KeyExchangeRequest, KeyExchanger.KeyExchangeResponse> {
+    /**
+     * Public-Private key pair generator procedure.
+     */
     private final PublicPrivateKeyPairGenerator publicPrivateKeyPairGenerator;
 
     /**
@@ -78,6 +81,20 @@ public class KeyExchanger extends AsynchronousProcedure<KeyExchanger.KeyExchange
          * The key of other party involved in this key agreement.
          */
         private final Key otherPartyKey;
+
+        /**
+         * Constructor to create an instance of this model.
+         *
+         * @param algorithm     The algorithm to use for key exchange.
+         * @param keySize       Key size of generated key pairs.
+         * @param otherPartyKey The key of other party involved in this key agreement.
+         */
+        public KeyExchangeRequest(Algorithm algorithm, KeySize keySize, Key otherPartyKey) {
+            this.secureRandom = new SecureRandom();
+            this.algorithm = algorithm;
+            this.keySize = keySize;
+            this.otherPartyKey = otherPartyKey;
+        }
 
         /**
          * Constructor to create an instance of this model.

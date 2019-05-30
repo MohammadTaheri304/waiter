@@ -23,7 +23,6 @@ public class KeyExchangerTest {
         // Bob Side, receives alice's public key.
         var keyExchanger = new KeyExchanger();
         var bobKeyExchange = keyExchanger.apply(Executors.newSingleThreadExecutor(), new KeyExchanger.KeyExchangeRequest(
-                new SecureRandom(),
                 KeyExchanger.KeyExchangeRequest.Algorithm.DiffieHellman,
                 KeyExchanger.KeyExchangeRequest.KeySize._1024,
                 aliceKeyPair.getPublic()

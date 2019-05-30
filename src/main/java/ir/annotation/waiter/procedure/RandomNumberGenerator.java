@@ -23,7 +23,10 @@ public class RandomNumberGenerator extends AsynchronousProcedure<RandomNumberGen
 
     @Override
     public CompletableFuture<Optional<Integer>> apply(ExecutorService executor, GenerateRandomNumberRequest generateRandomNumberRequest) {
-        return CompletableFuture.supplyAsync(() -> Optional.of(generateRandomNumberRequest.getFrom() + generateRandomNumberRequest.getSecureRandom().nextInt(generateRandomNumberRequest.getTo() + 1)), executor);
+        return CompletableFuture.supplyAsync(
+                () -> Optional.of(generateRandomNumberRequest.getFrom() + generateRandomNumberRequest.getSecureRandom().nextInt(generateRandomNumberRequest.getTo() - generateRandomNumberRequest.getFrom() + 1)),
+                executor
+        );
     }
 
     /**

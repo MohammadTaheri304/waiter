@@ -24,19 +24,19 @@ public class ExceptionHandler extends ChannelInboundHandlerAdapter {
     private static final Logger logger = LoggerFactory.getLogger(ExceptionHandler.class);
 
     /**
-     * Appropriate binary message for internal server error.
+     * Appropriate binary message for unknown error.
      */
-    private final Value internalServerErrorMessage;
+    private final Value unknownErrorMessage;
 
     /**
      * Constructor to instantiate and setup exception handler.
      */
     public ExceptionHandler() {
-        internalServerErrorMessage = map(
+        unknownErrorMessage = map(
                 string("succ"), bool(false),
                 string("errs"), array(map(
-                        string("code"), string(Error.Reason.INTERNAL_SERVER_ERROR.getError().getCode()),
-                        string("mess"), string(Error.Reason.INTERNAL_SERVER_ERROR.getError().getMessage())
+                        string("code"), string(Error.Reason.UNKNOWN.getError().getCode()),
+                        string("mess"), string(Error.Reason.UNKNOWN.getError().getMessage())
                 ))
         );
     }
@@ -47,7 +47,7 @@ public class ExceptionHandler extends ChannelInboundHandlerAdapter {
             logger.error("exception caught ", cause);
 
             try (var buffer = MessagePack.newDefaultBufferPacker()) {
-                buffer.packValue(internalServerErrorMessage);
+                buffer.packValue(unknownErrorMessage);
                 var bytesOut = ctx.alloc().buffer((int) buffer.getTotalWrittenBytes()); // Default to allocate direct buffer.
                 bytesOut.writeBytes(buffer.toByteArray());
                 ctx.writeAndFlush(bytesOut);

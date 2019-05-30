@@ -11,7 +11,12 @@ public class Error extends RuntimeException {
      */
     private final String code;
 
-
+    /**
+     * Constructor to create an error instance.
+     *
+     * @param code    Error code.
+     * @param message Appropriate message related to error code.
+     */
     private Error(String code, String message) {
         super(message);
         this.code = code;
@@ -36,6 +41,11 @@ public class Error extends RuntimeException {
          */
         private final Error error;
 
+        /**
+         * Enum constructor to create an instance of available constants.
+         *
+         * @param error The error exception.
+         */
         Reason(Error error) {
             this.error = error;
         }

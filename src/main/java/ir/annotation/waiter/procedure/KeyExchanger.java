@@ -146,8 +146,16 @@ public class KeyExchanger extends AsynchronousProcedure<KeyExchanger.KeyExchange
             _2048(2048),
             _4096(4096);
 
+            /**
+             * The key size to use.
+             */
             private final int size;
 
+            /**
+             * Enum constructor to create an instance of available constants.
+             *
+             * @param size The key size to use.
+             */
             KeySize(int size) {
                 this.size = size;
             }

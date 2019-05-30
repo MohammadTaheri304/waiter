@@ -110,8 +110,16 @@ public class PublicPrivateKeyPairGenerator extends AsynchronousProcedure<PublicP
             X25519("X25519"),
             X448("X448");
 
+            /**
+             * The name of algorithm to use.
+             */
             private final String name;
 
+            /**
+             * Enum constructor to create an instance of available constants.
+             *
+             * @param name The name of algorithm to use.
+             */
             Algorithm(String name) {
                 this.name = name;
             }
@@ -131,8 +139,16 @@ public class PublicPrivateKeyPairGenerator extends AsynchronousProcedure<PublicP
             _2048(2048),
             _4096(4096);
 
+            /**
+             * The key size to use.
+             */
             private final int size;
 
+            /**
+             * Enum constructor to create an instance of available constants.
+             *
+             * @param size The key size to use.
+             */
             KeySize(int size) {
                 this.size = size;
             }

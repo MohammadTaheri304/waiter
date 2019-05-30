@@ -128,8 +128,16 @@ public class SecretKeyGenerator extends AsynchronousProcedure<SecretKeyGenerator
             _192(192),
             _256(256);
 
+            /**
+             * The key size to use.
+             */
             private final int size;
 
+            /**
+             * Enum constructor to create an instance of available constants.
+             *
+             * @param size The key size to use.
+             */
             KeySize(int size) {
                 this.size = size;
             }

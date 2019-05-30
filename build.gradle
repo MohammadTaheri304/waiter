@@ -3,28 +3,39 @@ plugins {
     id 'application'
     id 'idea'
 
-    id "com.google.osdetector" version "1.6.2"
+    id 'com.google.osdetector' version '1.6.2'
 }
 
+group = 'ir.annotation'
+version = '0.0.1.SNAPSHOT'
+description = 'Simple, light and fast µ-server.'
 mainClassName = 'ir.annotation.waiter.Main'
 
-String os = osdetector.os
+ext {
+    nettyVersion = '4.1.36.Final'
+    messagePackCoreVersion = '0.8.16'
+    slf4jSimpleVersion = '1.7.26'
+    guavaVersion = '27.0.1-jre'
+    junitVersion = '4.12'
+}
+
+def os = osdetector.os
 
 dependencies {
-    implementation 'com.google.guava:guava:27.0.1-jre'
-
-    compile 'io.netty:netty-handler:4.1.35.Final'
-    compile 'io.netty:netty-transport-native-epoll:4.1.35.Final'
-    compile 'io.netty:netty-transport-native-kqueue:4.1.35.Final'
+    compile "io.netty:netty-handler:$nettyVersion"
+    compile "io.netty:netty-transport-native-epoll:$nettyVersion"
+    compile "io.netty:netty-transport-native-kqueue:$nettyVersion"
 
     if (os == "linux")
-        compile 'io.netty:netty-transport-native-epoll:4.1.35.Final:' + osdetector.classifier
+        compile "io.netty:netty-transport-native-epoll:$nettyVersion:" + osdetector.classifier
     if (os == "osx" || os == "freebsd" || os == "openbsd" || os == "netbsd")
-        compile 'io.netty:netty-transport-native-kqueue:4.1.35.Final:' + osdetector.classifier
+        compile "io.netty:netty-transport-native-kqueue:$nettyVersion:" + osdetector.classifier
 
-    compile 'org.msgpack:msgpack-core:0.8.16'
-    compile 'org.slf4j:slf4j-simple:1.7.26'
-    testImplementation 'junit:junit:4.12'
+    compile "org.msgpack:msgpack-core:$messagePackCoreVersion"
+    compile "org.slf4j:slf4j-simple:$slf4jSimpleVersion"
+
+    implementation "com.google.guava:guava:$guavaVersion"
+    testImplementation "junit:junit:$junitVersion"
 }
 
 repositories {

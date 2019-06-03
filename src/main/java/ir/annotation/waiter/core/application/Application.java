@@ -1,14 +1,17 @@
 package ir.annotation.waiter.core.application;
 
+import ir.annotation.waiter.core.application.annotation.StartOrder;
+import ir.annotation.waiter.core.application.annotation.StopOrder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.FileInputStream;
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.Properties;
 
 /**
@@ -30,16 +33,20 @@ public abstract class Application implements ContextAware {
      * @param args Argument list passed to start method. Can be command line arguments and options.
      */
     protected void start(String[] args) {
+        logger.info("starting application components ...");
         loadProperties(args);
         addShutdownHook();
         startComponents();
+        logger.info("application components started successfully");
     }
 
     /**
      * Method that is called to stop application.
      */
     protected void stop() {
+        logger.info("stopping application components ...");
         stopComponents();
+        logger.info("application components stopped successfully");
     }
 
     /**
@@ -69,20 +76,13 @@ public abstract class Application implements ContextAware {
     }
 
     /**
-     * Adds a shutdown hook for JVM to close application gracefully.
-     */
-    private void addShutdownHook() {
-        Runtime.getRuntime().addShutdownHook(new Thread(this::stop));
-    }
-
-    /**
      * Starts all components that are declared as fields on current application instance.
      * <p>
      * Before starting the application instance, adds jvm shutdown hook for application.
      * </p>
      */
     private void startComponents() {
-        declaredComponents().forEach(component -> {
+        instantiateDeclaredComponents().forEach(component -> {
             component = (Component) component.setup(getProperties());
             getContext().addThenStartComponent(component);
         });
@@ -92,11 +92,9 @@ public abstract class Application implements ContextAware {
      * Stops all components that are declared as fields on current application instance.
      */
     private void stopComponents() {
-        declaredComponents().stream()
-                .filter(Objects::nonNull)
-                .forEach(component ->
-                        getContext().stopComponentByIdentifier(component.getIdentifier())
-                );
+        loadDeclaredComponents().forEach(component ->
+                getContext().stopComponentByIdentifier(component.getIdentifier())
+        );
     }
 
     /**
@@ -104,25 +102,118 @@ public abstract class Application implements ContextAware {
      *
      * @return A list of all declared components.
      */
-    private List<Component> declaredComponents() {
+    private List<Component> instantiateDeclaredComponents() {
         var components = new ArrayList<Component>();
+        var fields = getClass().getDeclaredFields();
 
-        for (Field field : getClass().getDeclaredFields()) {
+        for (Field field : determineStartingOrder(fields)) {
             var type = field.getType();
             var superClass = type.getSuperclass();
 
             if (superClass != null)
                 if (superClass.getName().equals(Component.class.getName())) {
                     try {
+                        if (Modifier.isPrivate(field.getModifiers()))
+                            field.setAccessible(true);
+
                         var component = (Component) type.getConstructor().newInstance();
+                        field.set(this, component);
                         components.add(component);
                     } catch (Exception e) {
-                        logger.error("loading constructor for {} component failed with message {}", type.getName(), e.getMessage());
+                        logger.error("instantiating constructor for {} component failed with message {}", type.getName(), e.getMessage());
                     }
                 }
         }
 
         return components;
+    }
+
+    /**
+     * Returns back all not null components defined as fields on this application instance.
+     *
+     * @return A list of all declared components.
+     */
+    private List<Component> loadDeclaredComponents() {
+        var components = new ArrayList<Component>();
+        var fields = getClass().getDeclaredFields();
+
+        for (Field field : determineStoppingOrder(fields)) {
+            var type = field.getType();
+            var superClass = type.getSuperclass();
+
+            if (superClass != null)
+                if (superClass.getName().equals(Component.class.getName())) {
+                    try {
+                        if (Modifier.isPrivate(field.getModifiers()))
+                            field.setAccessible(true);
+
+                        var component = field.get(this);
+                        if (component != null)
+                            components.add((Component) component);
+                    } catch (Exception e) {
+                        logger.error("loading {} component failed with message {}", type.getName(), e.getMessage());
+                    }
+                }
+        }
+
+        return components;
+    }
+
+    /**
+     * Sorts passed field array based on {@link StartOrder} annotation.
+     *
+     * @param fields The unsorted array that must be sorted.
+     * @return Sorted array, same reference.
+     */
+    private Field[] determineStartingOrder(Field[] fields) {
+        Arrays.sort(fields, (f1, f2) -> {
+            var o1 = f1.getAnnotation(StartOrder.class);
+            var o2 = f2.getAnnotation(StartOrder.class);
+
+            if (o1 != null && o2 != null) {
+                return o1.value() - o2.value();
+            } else if (o1 != null) {
+                return -1;
+            } else if (o2 != null) {
+                return 1;
+            } else {
+                return f1.getName().compareTo(f2.getName());
+            }
+        });
+
+        return fields;
+    }
+
+    /**
+     * Sorts passed field array based on {@link StopOrder} annotation.
+     *
+     * @param fields The unsorted array that must be sorted.
+     * @return Sorted array, same reference.
+     */
+    private Field[] determineStoppingOrder(Field[] fields) {
+        Arrays.sort(fields, (f1, f2) -> {
+            var o1 = f1.getAnnotation(StopOrder.class);
+            var o2 = f2.getAnnotation(StopOrder.class);
+
+            if (o1 != null && o2 != null) {
+                return o1.value() - o2.value();
+            } else if (o1 != null) {
+                return -1;
+            } else if (o2 != null) {
+                return 1;
+            } else {
+                return f1.getName().compareTo(f2.getName());
+            }
+        });
+
+        return fields;
+    }
+
+    /**
+     * Adds a shutdown hook for JVM to close application gracefully.
+     */
+    private void addShutdownHook() {
+        Runtime.getRuntime().addShutdownHook(new Thread(this::stop));
     }
 
     protected final Properties getProperties() {

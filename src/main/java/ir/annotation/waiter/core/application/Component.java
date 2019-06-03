@@ -11,9 +11,8 @@ import java.util.Properties;
  * </p>
  *
  * @param <T> The type of component.
- * @param <R> The return type of start method. Sometimes useful.
  */
-public abstract class Component<T, R> extends Identity implements ContextAware {
+public abstract class Component<T> extends Identity implements ContextAware {
 
     /**
      * Constructor to provide an identifier for creating component.
@@ -35,10 +34,9 @@ public abstract class Component<T, R> extends Identity implements ContextAware {
     /**
      * Start will be called on application startup to start component running.
      *
-     * @return The return value of starting component. May be useful on asynchronous start call types.
      * @throws Exception If component start call failed.
      */
-    protected abstract R start() throws Exception;
+    protected abstract void start() throws Exception;
 
     /**
      * Stop will be called on application shutdown ro stop component from running.

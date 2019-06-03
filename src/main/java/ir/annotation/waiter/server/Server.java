@@ -1,7 +1,6 @@
 package ir.annotation.waiter.server;
 
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.ChannelFuture;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.epoll.EpollEventLoopGroup;
 import io.netty.channel.epoll.EpollServerSocketChannel;
@@ -23,7 +22,7 @@ import static ir.annotation.waiter.server.util.OSUtil.OS.*;
  *
  * @author Alireza Pourtaghi
  */
-public final class Server extends Component<Server, ChannelFuture> {
+public final class Server extends Component<Server> {
     private static final Logger logger = LoggerFactory.getLogger(Server.class);
 
     /**
@@ -82,7 +81,7 @@ public final class Server extends Component<Server, ChannelFuture> {
     }
 
     @Override
-    public ChannelFuture start() throws InterruptedException {
+    public void start() throws InterruptedException {
         logger.info("starting server on {}:{} ...", getHost(), getPort());
         var serverBootstrap = new ServerBootstrap();
 
@@ -99,7 +98,7 @@ public final class Server extends Component<Server, ChannelFuture> {
         serverBootstrap.localAddress(getHost(), getPort());
         serverBootstrap.childHandler(new Initializer(getMaxFrameSize()));
 
-        return serverBootstrap.bind().sync();
+        serverBootstrap.bind().sync();
     }
 
     @Override

@@ -54,6 +54,8 @@ public abstract class Application implements ContextAware {
      * <p>
      * If the application started with --properties flag, the provided file path will be used to load application properties and overwrites the values loaded from application.properties located in resources folder.
      * </p>
+     *
+     * @param args The arguments passed on application startup including options and flags.
      */
     protected void loadProperties(String[] args) {
         try {

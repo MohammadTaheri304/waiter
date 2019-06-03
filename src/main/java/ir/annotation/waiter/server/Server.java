@@ -10,7 +10,6 @@ import io.netty.channel.kqueue.KQueueServerSocketChannel;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import ir.annotation.waiter.core.application.Component;
-import ir.annotation.waiter.server.handler.Initializer;
 import ir.annotation.waiter.server.util.OSUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -70,12 +69,7 @@ public final class Server extends Component<Server, ChannelFuture> {
         this.maxFrameSize = maxFrameSize;
     }
 
-    /**
-     * Setups the server.
-     *
-     * @param properties Application properties.
-     * @return A newly created and ready to start {@link Server}.
-     */
+    @Override
     public Server setup(Properties properties) {
         var os = OSUtil.detectOS();
 
@@ -87,12 +81,7 @@ public final class Server extends Component<Server, ChannelFuture> {
         return new Server(eventLoopGroup, host, port, maxFrameSize);
     }
 
-    /**
-     * Starts the server.
-     *
-     * @return Returned value is a {@link ChannelFuture} that is the result of bind call on server bootstrap.
-     * @throws InterruptedException If any exception occurred during bind operation.
-     */
+    @Override
     public ChannelFuture start() throws InterruptedException {
         logger.info("starting server on {}:{} ...", getHost(), getPort());
         var serverBootstrap = new ServerBootstrap();
@@ -113,11 +102,7 @@ public final class Server extends Component<Server, ChannelFuture> {
         return serverBootstrap.bind().sync();
     }
 
-    /**
-     * Tries to gracefully shutdown the server.
-     *
-     * @throws InterruptedException If any exception occurred during shutdown operation.
-     */
+    @Override
     public void stop() throws InterruptedException {
         logger.info("stopping server ...");
         eventLoopGroup.shutdownGracefully().sync();

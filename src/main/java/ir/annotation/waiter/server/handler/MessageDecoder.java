@@ -1,4 +1,4 @@
-package ir.annotation.waiter.server.handler.inbound;
+package ir.annotation.waiter.server.handler;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;

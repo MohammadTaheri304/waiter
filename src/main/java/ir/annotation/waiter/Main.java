@@ -1,11 +1,18 @@
 package ir.annotation.waiter;
 
+import ir.annotation.waiter.core.application.Application;
+import ir.annotation.waiter.server.Server;
+
 /**
  * Main application class that includes main method.
  *
  * @author Alireza Pourtaghi
  */
-public final class Main {
+public final class Main extends Application {
+    /**
+     * {@link Server} component.
+     */
+    private Server server;
 
     /**
      * Main method that is invoked by JVM to start application.
@@ -13,18 +20,6 @@ public final class Main {
      * @param args Arguments passed to the application on startup, including options and flags.
      */
     public static void main(String[] args) {
-        var waiter = new Waiter();
-        addShutdownHook(waiter);
-
-        waiter.start(args);
-    }
-
-    /**
-     * Adds a shutdown hook for JVM to be closed gracefully.
-     *
-     * @param waiter Waiter instance created on application startup.
-     */
-    private static void addShutdownHook(Waiter waiter) {
-        Runtime.getRuntime().addShutdownHook(new Thread(waiter::stop));
+        new Main().start(args);
     }
 }

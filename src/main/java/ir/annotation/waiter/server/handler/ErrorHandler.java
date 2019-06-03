@@ -1,4 +1,4 @@
-package ir.annotation.waiter.server.handler.inbound;
+package ir.annotation.waiter.server.handler;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;

@@ -34,7 +34,7 @@ public class Error extends RuntimeException {
     public enum Reason {
         UNKNOWN(new Error("unknown", "Unknown error occurred.")),
         INVALID_MESSAGE_FORMAT(new Error("invalid.message.format", "Message format is not valid. See specification.")),
-        RESOURCE_NOT_FOUND(new Error("resource.not.found", "The requested resource not found."));
+        PROCEDURE_NOT_FOUND(new Error("procedure.not.found", "Requested procedure not found."));
 
         /**
          * The error exception.

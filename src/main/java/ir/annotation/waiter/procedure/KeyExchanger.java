@@ -24,10 +24,12 @@ public class KeyExchanger extends AsynchronousProcedure<KeyExchanger.KeyExchange
 
     /**
      * Constructor to create an instance of this procedure.
+     *
+     * @param publicPrivateKeyPairGenerator Public-Private key pair generator procedure.
      */
-    public KeyExchanger() {
+    public KeyExchanger(PublicPrivateKeyPairGenerator publicPrivateKeyPairGenerator) {
         super("exchange_key");
-        this.publicPrivateKeyPairGenerator = new PublicPrivateKeyPairGenerator();
+        this.publicPrivateKeyPairGenerator = publicPrivateKeyPairGenerator;
     }
 
     @Override

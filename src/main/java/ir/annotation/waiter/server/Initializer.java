@@ -1,12 +1,12 @@
-package ir.annotation.waiter.server.handler;
+package ir.annotation.waiter.server;
 
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.DelimiterBasedFrameDecoder;
-import ir.annotation.waiter.server.handler.inbound.ErrorHandler;
-import ir.annotation.waiter.server.handler.inbound.ExceptionHandler;
-import ir.annotation.waiter.server.handler.inbound.MessageDecoder;
+import ir.annotation.waiter.server.handler.ErrorHandler;
+import ir.annotation.waiter.server.handler.ExceptionHandler;
+import ir.annotation.waiter.server.handler.MessageDecoder;
 import org.msgpack.core.MessagePack;
 import org.msgpack.value.impl.ImmutableBinaryValueImpl;
 
